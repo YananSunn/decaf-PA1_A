@@ -97,7 +97,7 @@ public abstract class Tree {
     /**
      * Synchronized statements, of type Synchonized.
      */
-    public static final int SYNCHRONIZED = CASE + 1;
+    public static final int SYNCHRONIZED = LABELLED + 1;
 
     /**
      * Try statements, of type Try.
@@ -277,7 +277,10 @@ public abstract class Tree {
     public static final int NULL = MOD + 1;
     public static final int CALLEXPR = NULL + 1;
     public static final int THISEXPR = CALLEXPR + 1;
-    public static final int READINTEXPR = THISEXPR + 1;
+ 
+    public static final int SCOPYEXPR = THISEXPR + 1;
+    public static final int READINTEXPR = SCOPYEXPR + 1;
+    
     public static final int READLINEEXPR = READINTEXPR + 1;
     public static final int PRINT = READLINEEXPR + 1;
     
@@ -1042,6 +1045,33 @@ public abstract class Tree {
     		pw.println("this");
     	}
    }
+    
+    public static class SCopyExpr extends Expr {
+
+    	public String ident;
+    	public Expr expr;
+
+    	public SCopyExpr(String ident, Expr expr, Location loc) {
+    		super(SCOPYEXPR, loc);
+    		this.ident = ident;
+    		this.expr = expr;
+    	}
+
+    	@Override
+    	public void accept(Visitor visitor) {
+    		visitor.visitSCopyExpr(this);
+    	}
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("scopy");
+    		pw.incIndent();
+    		pw.println(ident);
+    		expr.printTo(pw);
+    		pw.decIndent();
+    		
+    	}
+   }
 
     /**
       * A type cast.
@@ -1400,6 +1430,10 @@ public abstract class Tree {
         public void visitThisExpr(ThisExpr that) {
             visitTree(that);
         }
+        
+        public void visitSCopyExpr(SCopyExpr that) {
+            visitTree(that);
+        }
 
         public void visitLValue(LValue that) {
             visitTree(that);
@@ -1416,7 +1450,8 @@ public abstract class Tree {
         public void visitIndexed(Indexed that) {
             visitTree(that);
         }
-
+       
+        
         public void visitIdent(Ident that) {
             visitTree(that);
         }

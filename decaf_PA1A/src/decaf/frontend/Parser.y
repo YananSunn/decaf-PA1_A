@@ -31,6 +31,9 @@ import java.util.*;
 %token LITERAL
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
+
+%token SCOPY
+
 %token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
 
@@ -188,6 +191,10 @@ Stmt		    :	VariableDef
                 			$$.stmt = new Tree.Skip($2.loc);
                 		}
                 	}
+                |	SCOPY '(' IDENTIFIER ',' Expr ')'
+                	{
+                		$$.stmt = new Tree.SCopyExpr($3.ident, $5.expr, $1.loc);
+                	}
                 |	IfStmt
                 |	WhileStmt
                 |	ForStmt
@@ -317,11 +324,13 @@ Expr            :	LValue
                 |	READ_LINE '(' ')'
                 	{
                 		$$.expr = new Tree.ReadLineExpr($1.loc);
-                	}
+                	}   
                 |	THIS
                 	{
                 		$$.expr = new Tree.ThisExpr($1.loc);
                 	}
+                	
+                	
                 |	NEW IDENTIFIER '(' ')'
                 	{
                 		$$.expr = new Tree.NewClass($2.ident, $1.loc);

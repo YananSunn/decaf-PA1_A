@@ -61,6 +61,9 @@ WHITESPACE			= ([ \t]+)
 "class"				{ return keyword(Parser.CLASS);			}
 "extends"			{ return keyword(Parser.EXTENDS);		}
 "this"				{ return keyword(Parser.THIS);			}
+
+"scopy"				{ return keyword(Parser.SCOPY);			}
+
 "while"				{ return keyword(Parser.WHILE);			}
 "for"				{ return keyword(Parser.FOR);			}
 "if"				{ return keyword(Parser.IF);			}
