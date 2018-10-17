@@ -285,8 +285,9 @@ public abstract class Tree {
     public static final int IFSUBSTMT = GUARDED + 1;
     public static final int VARSTMT = IFSUBSTMT + 1;
     public static final int ARRAYCONSTANT = VARSTMT + 1;
+    public static final int NEWSAMEARRAY = ARRAYCONSTANT + 1;
     
-    public static final int READLINEEXPR = ARRAYCONSTANT + 1;
+    public static final int READLINEEXPR = NEWSAMEARRAY + 1;
 
     public static final int PRINT = READLINEEXPR + 1;
     
@@ -381,10 +382,6 @@ public abstract class Tree {
    }
     
 	public static class Sealed extends ClassDef {
-    	
-//    	public String name;
-//    	public String parent;
-//    	public List<Tree> fields;
 
         public Sealed(String name, String parent, List<Tree> fields,
     			Location loc) {
@@ -1190,6 +1187,33 @@ public abstract class Tree {
     		pw.decIndent();
     	}
     }
+    
+    public static class NewSameArray extends Expr {
+
+    	public Tree newsamearray;
+    	public Expr expr;
+
+        public NewSameArray(Expr expr, Tree newsamearray, Location loc) {
+            super(NEWSAMEARRAY, loc);
+    		this.expr = expr;
+    		this.newsamearray = newsamearray;
+       }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitNewSameArray(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("array repeat");
+    		pw.incIndent();
+    		expr.printTo(pw);
+    		newsamearray.printTo(pw);
+    		pw.decIndent();
+    	}
+    }
+    
 
     /**
       * instanceof expression
@@ -1301,8 +1325,8 @@ public abstract class Tree {
 
     public static class ArrayConstant extends Expr {
 
-		public List<Tree> constantStmt;
-	    public ArrayConstant(List<Tree> constantStmt, Location loc){
+		public List<Expr> constantStmt;
+	    public ArrayConstant(List<Expr> constantStmt, Location loc){
 	        super(ARRAYCONSTANT, loc);
 	        this.constantStmt = constantStmt;
 	    }
@@ -1316,8 +1340,16 @@ public abstract class Tree {
 	    public void printTo(IndentPrintWriter pw){
 	        pw.println("array const");
 	        pw.incIndent();
-	        for (Tree stmt : constantStmt)
-	            stmt.printTo(pw);
+	        for (Expr stmt : constantStmt)
+	        {
+	        	if(stmt != null) {
+	    		    stmt.printTo(pw);
+	    	    }
+	    	    else {
+	    	        pw.println("<empty>");
+	    	        break;
+	    	    }
+	        }
 	        pw.decIndent();
 	    }
     }
@@ -1583,6 +1615,10 @@ public abstract class Tree {
         }
         
         public void visitArrayConstant(ArrayConstant that){
+            visitTree(that);
+        }
+        
+        public void visitNewSameArray(NewSameArray that){
             visitTree(that);
         }
 

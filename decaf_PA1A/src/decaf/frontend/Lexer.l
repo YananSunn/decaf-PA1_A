@@ -87,6 +87,7 @@ WHITESPACE			= ([ \t]+)
 "||"				{ return operator(Parser.OR);			}
 
 "|||"				{ return operator(Parser.GUARDED);		}
+"%%"				{ return operator(Parser.NEWSAMEARRAY);		}
 
 {SIMPLE_OPERATOR}	{ return operator((int)yycharat(0));	}
 

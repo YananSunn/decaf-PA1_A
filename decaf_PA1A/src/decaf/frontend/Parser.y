@@ -32,9 +32,9 @@ import java.util.*;
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
 
-%token SCOPY SEALED GUARDED
+%token SCOPY SEALED GUARDED NEWSAMEARRAY 
 
-%token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.'
+%token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.' '%%'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
 
 %left OR
@@ -42,7 +42,10 @@ import java.util.*;
 %nonassoc EQUAL NOT_EQUAL
 %nonassoc LESS_EQUAL GREATER_EQUAL '<' '>'
 %left  '+' '-'
+
+%left  '%%'
 %left  '*' '/' '%' ',' 
+
 %nonassoc UMINUS '!' 
 %nonassoc '[' '.' 
 %nonassoc ')' EMPTY
@@ -391,6 +394,11 @@ Expr            :	LValue
                 	{
                 		$$.expr = new Tree.TypeCast($3.ident, $5.expr, $5.loc);
                 	} 
+                	
+				|	Expr '%%' intConstant
+                	{
+                		$$.expr = new NewSameArray($1.expr, $3.stmt, $2.loc);
+                	}
                 ;
 	
 Constant        :	LITERAL
@@ -406,23 +414,23 @@ Constant        :	LITERAL
                 
 ArrayConstant	:	'[' ConstantList ']'
 					{
-						$$.expr = new Tree.ArrayConstant($2.slist, $1.loc);
+						$$.expr = new Tree.ArrayConstant($2.elist, $1.loc);
 					}
 				;
 
 ConstantList    :   ConstantList ',' Constant
                     {
-                        $$.slist.add($3.stmt);
+                        $$.elist.add($3.expr);
                     }
                 |   /* empty */
                     {
                         $$ = new SemValue();
-                        $$.slist = new ArrayList<Tree>();
+                        $$.elist = new ArrayList<Tree.Expr>();
                     }
-                |   Constant
+				|   Constant
                     {
-                        $$.slist = new ArrayList<Tree>();
-                        $$.slist.add($1.stmt);
+                        $$.elist = new ArrayList<Tree.Expr>();
+                        $$.elist.add($1.expr);
                     }
                 ;
 
