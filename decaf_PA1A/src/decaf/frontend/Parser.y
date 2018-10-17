@@ -404,6 +404,10 @@ Expr            :	LValue
                 	{
                 		$$.expr = new Tree.JointArray($1.expr, $3.expr, $2.loc);
                 	}
+                |	Expr '[' Expr ':' Expr ']'
+                	{
+                		$$.expr = new Tree.AccessArray($1.expr, $3.expr, $5.expr, $1.loc);
+                	}
                 ;
 	
 Constant        :	LITERAL

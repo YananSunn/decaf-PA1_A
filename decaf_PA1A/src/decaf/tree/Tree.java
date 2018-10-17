@@ -287,8 +287,9 @@ public abstract class Tree {
     public static final int ARRAYCONSTANT = VARSTMT + 1;
     public static final int NEWSAMEARRAY = ARRAYCONSTANT + 1;
     public static final int JOINTARRAY = NEWSAMEARRAY + 1;
+    public static final int ACCESSARRAY = JOINTARRAY + 1;
     
-    public static final int READLINEEXPR = JOINTARRAY + 1;
+    public static final int READLINEEXPR = ACCESSARRAY + 1;
 
     public static final int PRINT = READLINEEXPR + 1;
     
@@ -1241,6 +1242,37 @@ public abstract class Tree {
     	}
     }
     
+    public static class AccessArray extends Expr {
+
+    	public Expr expr1;
+    	public Expr expr2;
+	    public Expr expr3;
+
+        public AccessArray(Expr expr1, Expr expr2, Expr expr3, Location loc) {
+            super(ACCESSARRAY, loc);
+    		this.expr1 = expr1;
+			this.expr2 = expr2;
+			this.expr3 = expr3;
+       }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitAccessArray(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("arrref");
+    		pw.incIndent();
+    		expr1.printTo(pw);
+    		pw.println("range");
+    		pw.incIndent();
+    		expr2.printTo(pw);
+    		expr3.printTo(pw);
+    		pw.decIndent();
+    	}
+    }
+    
 
     /**
       * instanceof expression
@@ -1648,6 +1680,10 @@ public abstract class Tree {
         }
         
         public void visitJointArray(JointArray that){
+            visitTree(that);
+        }
+        
+        public void visitAccessArray(AccessArray that){
             visitTree(that);
         }
         
