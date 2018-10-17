@@ -32,7 +32,7 @@ import java.util.*;
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
 
-%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY DEFAULT IN
+%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY DEFAULT IN FOREACH
 
 %token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.' '%%' '++'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
@@ -215,8 +215,25 @@ Stmt		    :	VariableDef
                 |	BreakStmt ';'
                 |	StmtBlock
                 |	GuardedStmt
+                |	ForeachStmt
                 ;
-
+ForeachStmt		:	FOREACH '(' VAR IDENTIFIER IN Expr WHILE Expr ')' Stmt
+					{
+						$$.stmt = new Tree.ForeachVarArray($4.ident, $6.expr, $8.expr, $10.stmt, $1.loc);
+					}
+				|	FOREACH '(' VAR IDENTIFIER IN Expr ')' Stmt
+					{
+						$$.stmt = new Tree.ForeachVarArray($4.ident, $6.expr, null, $8.stmt, $1.loc);
+					}
+				|	FOREACH '(' Type IDENTIFIER IN Expr WHILE Expr ')' Stmt
+					{
+						$$.stmt = new Tree.ForeachIdentArray($3.type, $4.ident, $6.expr, $8.expr, $10.stmt, $1.loc);
+					}
+				|	FOREACH '(' Type IDENTIFIER IN Expr ')' Stmt
+					{
+						$$.stmt = new Tree.ForeachIdentArray($3.type, $4.ident, $6.expr, null, $8.stmt, $1.loc);
+					}
+				;
 SimpleStmt      :	LValue '=' Expr
 					{
 						$$.stmt = new Tree.Assign($1.lvalue, $3.expr, $2.loc);

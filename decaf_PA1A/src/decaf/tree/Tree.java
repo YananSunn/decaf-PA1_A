@@ -290,8 +290,9 @@ public abstract class Tree {
     public static final int ACCESSARRAY = JOINTARRAY + 1;
     public static final int DEFAULTARRAY = ACCESSARRAY + 1;
     public static final int COMPARRAY = DEFAULTARRAY + 1;
+    public static final int FOREACHARRAY = COMPARRAY + 1;
     
-    public static final int READLINEEXPR = COMPARRAY + 1;
+    public static final int READLINEEXPR = FOREACHARRAY + 1;
 
     public static final int PRINT = READLINEEXPR + 1;
     
@@ -1345,6 +1346,83 @@ public abstract class Tree {
     	}
     }
     
+    public static class ForeachVarArray extends Expr {
+
+    	public Expr expr1;
+    	public Expr expr2;
+	    public String name;
+	    public Tree stmt;
+
+        public ForeachVarArray(String name, Expr expr1, Expr expr2, Tree stmt, Location loc) {
+            super(FOREACHARRAY, loc);
+    		this.name = name;
+    		this.expr1 = expr1;
+			this.expr2 = expr2;
+			this.stmt = stmt;
+       }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitForeachVarArray(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("foreach");
+    		pw.incIndent();
+    		pw.println("varbind " + name + " var");
+    		expr1.printTo(pw);
+    		if(expr2 != null) {
+    			expr2.printTo(pw);
+    		}
+    		else {
+    			pw.println("boolconst true");
+    		}
+    		stmt.printTo(pw);
+    		pw.decIndent();
+    	}
+    }
+    
+    public static class ForeachIdentArray extends Expr {
+
+    	public Expr expr1;
+    	public Expr expr2;
+    	public TypeLiteral elementType;
+	    public Tree stmt;
+	    public String name;
+
+        public ForeachIdentArray(TypeLiteral elementType, String name, Expr expr1, Expr expr2, Tree stmt, Location loc) {
+            super(FOREACHARRAY, loc);
+    		this.elementType = elementType;
+    		this.name = name;
+    		this.expr1 = expr1;
+			this.expr2 = expr2;
+			this.stmt = stmt;
+       }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitForeachIdentArray(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("foreach");
+    		pw.incIndent();
+    		pw.print("varbind " + name + " ");
+    		elementType.printTo(pw);
+    		pw.println();
+    		expr1.printTo(pw);
+    		if(expr2 != null) {
+    			expr2.printTo(pw);
+    		}
+    		else {
+    			pw.println("boolconst true");
+    		}
+    		stmt.printTo(pw);
+    		pw.decIndent();
+    	}
+    }
     
 
     /**
@@ -1765,6 +1843,14 @@ public abstract class Tree {
         }
         
         public void visitCompArray(CompArray that){
+            visitTree(that);
+        }
+        
+        public void visitForeachVarArray(ForeachVarArray that){
+            visitTree(that);
+        }
+        
+        public void visitForeachIdentArray(ForeachIdentArray that){
             visitTree(that);
         }
         
