@@ -283,9 +283,9 @@ public abstract class Tree {
     public static final int READINTEXPR = SEALED + 1;
     public static final int GUARDED = READINTEXPR + 1;
     public static final int IFSUBSTMT = GUARDED + 1;
+    public static final int VARSTMT = IFSUBSTMT + 1;
     
-    
-    public static final int READLINEEXPR = IFSUBSTMT + 1;
+    public static final int READLINEEXPR = VARSTMT + 1;
     public static final int PRINT = READLINEEXPR + 1;
     
     /**
@@ -1277,6 +1277,25 @@ public abstract class Tree {
     		}
     	}
     }
+    
+    public static class Var extends LValue {
+    	public String name;
+
+        public Var(String name, Location loc) {
+            super(VARSTMT, loc);
+    		this.name = name;
+        }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitVar(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("var " + name);
+    	}
+    }
 
     /**
       * A constant value given literally.
@@ -1533,6 +1552,10 @@ public abstract class Tree {
          public void visitIfSubStmt(IfSubStmt that){
             visitTree(that);
         }
+         
+         public void visitVar(Var that){
+             visitTree(that);
+         }
 
 
         public void visitLValue(LValue that) {

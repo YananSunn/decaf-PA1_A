@@ -275,6 +275,11 @@ LValue          :	Receiver IDENTIFIER
                 	{
                 		$$.lvalue = new Tree.Indexed($1.expr, $3.expr, $1.loc);
                 	}
+                
+                |	VAR IDENTIFIER
+                	{
+                		$$.lvalue = new Tree.Var($2.ident, $1.loc);
+                	}
                 ;
 
 Call            :	Receiver IDENTIFIER '(' Actuals ')'
