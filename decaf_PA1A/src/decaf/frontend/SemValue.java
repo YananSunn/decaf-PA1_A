@@ -46,8 +46,6 @@ public class SemValue {
 
 	public ClassDef cdef;
 
-//	public Sealed sel;
-	
 	public VarDef vdef;
 
 	public MethodDef fdef;

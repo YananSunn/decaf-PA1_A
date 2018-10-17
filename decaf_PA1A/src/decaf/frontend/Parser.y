@@ -42,7 +42,7 @@ import java.util.*;
 %nonassoc EQUAL NOT_EQUAL
 %nonassoc LESS_EQUAL GREATER_EQUAL '<' '>'
 %left  '+' '-'
-%left  '*' '/' '%'  
+%left  '*' '/' '%' ',' 
 %nonassoc UMINUS '!' 
 %nonassoc '[' '.' 
 %nonassoc ')' EMPTY
@@ -401,6 +401,29 @@ Constant        :	LITERAL
                 	{
 						$$.expr = new Null($1.loc);
 					}
+				|	ArrayConstant
+                ;
+                
+ArrayConstant	:	'[' ConstantList ']'
+					{
+						$$.expr = new Tree.ArrayConstant($2.slist, $1.loc);
+					}
+				;
+
+ConstantList    :   ConstantList ',' Constant
+                    {
+                        $$.slist.add($3.stmt);
+                    }
+                |   /* empty */
+                    {
+                        $$ = new SemValue();
+                        $$.slist = new ArrayList<Tree>();
+                    }
+                |   Constant
+                    {
+                        $$.slist = new ArrayList<Tree>();
+                        $$.slist.add($1.stmt);
+                    }
                 ;
 
 Actuals         :	ExprList

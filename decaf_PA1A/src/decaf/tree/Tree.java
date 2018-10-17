@@ -284,8 +284,10 @@ public abstract class Tree {
     public static final int GUARDED = READINTEXPR + 1;
     public static final int IFSUBSTMT = GUARDED + 1;
     public static final int VARSTMT = IFSUBSTMT + 1;
+    public static final int ARRAYCONSTANT = VARSTMT + 1;
     
-    public static final int READLINEEXPR = VARSTMT + 1;
+    public static final int READLINEEXPR = ARRAYCONSTANT + 1;
+
     public static final int PRINT = READLINEEXPR + 1;
     
     /**
@@ -1297,6 +1299,29 @@ public abstract class Tree {
     	}
     }
 
+    public static class ArrayConstant extends Expr {
+
+		public List<Tree> constantStmt;
+	    public ArrayConstant(List<Tree> constantStmt, Location loc){
+	        super(ARRAYCONSTANT, loc);
+	        this.constantStmt = constantStmt;
+	    }
+	    
+	     @Override
+	    public void accept(Visitor v){
+	        v.visitArrayConstant(this);
+	    }
+	     
+	     @Override
+	    public void printTo(IndentPrintWriter pw){
+	        pw.println("array const");
+	        pw.incIndent();
+	        for (Tree stmt : constantStmt)
+	            stmt.printTo(pw);
+	        pw.decIndent();
+	    }
+    }
+    
     /**
       * A constant value given literally.
       * @param value value representation
@@ -1549,13 +1574,17 @@ public abstract class Tree {
             visitTree(that);
         }
         
-         public void visitIfSubStmt(IfSubStmt that){
+        public void visitIfSubStmt(IfSubStmt that){
             visitTree(that);
         }
          
-         public void visitVar(Var that){
+        public void visitVar(Var that){
              visitTree(that);
-         }
+        }
+        
+        public void visitArrayConstant(ArrayConstant that){
+            visitTree(that);
+        }
 
 
         public void visitLValue(LValue that) {
