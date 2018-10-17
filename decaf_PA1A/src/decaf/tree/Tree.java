@@ -1190,10 +1190,10 @@ public abstract class Tree {
     
     public static class NewSameArray extends Expr {
 
-    	public Tree newsamearray;
+    	public Expr newsamearray;
     	public Expr expr;
 
-        public NewSameArray(Expr expr, Tree newsamearray, Location loc) {
+        public NewSameArray(Expr expr, Expr newsamearray, Location loc) {
             super(NEWSAMEARRAY, loc);
     		this.expr = expr;
     		this.newsamearray = newsamearray;
@@ -1340,15 +1340,12 @@ public abstract class Tree {
 	    public void printTo(IndentPrintWriter pw){
 	        pw.println("array const");
 	        pw.incIndent();
-	        for (Expr stmt : constantStmt)
-	        {
-	        	if(stmt != null) {
-	    		    stmt.printTo(pw);
-	    	    }
-	    	    else {
-	    	        pw.println("<empty>");
-	    	        break;
-	    	    }
+	        if(constantStmt != null){
+	        	for (Expr stmt : constantStmt)        	
+	        		stmt.printTo(pw);	    	        
+	        }
+	        else {
+	        	pw.println("<empty>");
 	        }
 	        pw.decIndent();
 	    }
@@ -1388,6 +1385,7 @@ public abstract class Tree {
     		}
     	}
     }
+    
     public static class Null extends Expr {
 
         public Null(Location loc) {
@@ -1621,7 +1619,7 @@ public abstract class Tree {
         public void visitNewSameArray(NewSameArray that){
             visitTree(that);
         }
-
+        
 
         public void visitLValue(LValue that) {
             visitTree(that);

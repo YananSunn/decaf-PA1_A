@@ -395,9 +395,9 @@ Expr            :	LValue
                 		$$.expr = new Tree.TypeCast($3.ident, $5.expr, $5.loc);
                 	} 
                 	
-				|	Expr '%%' intConstant
+				|	Expr NEWSAMEARRAY Expr
                 	{
-                		$$.expr = new NewSameArray($1.expr, $3.stmt, $2.loc);
+                		$$.expr = new Tree.NewSameArray($1.expr, $3.expr, $2.loc);
                 	}
                 ;
 	
@@ -425,7 +425,6 @@ ConstantList    :   ConstantList ',' Constant
                 |   /* empty */
                     {
                         $$ = new SemValue();
-                        $$.elist = new ArrayList<Tree.Expr>();
                     }
 				|   Constant
                     {

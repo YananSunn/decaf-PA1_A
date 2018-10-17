@@ -102,7 +102,7 @@
   78       | NEW Type '[' Expr ']'
   79       | INSTANCEOF '(' Expr ',' IDENTIFIER ')'
   80       | '(' CLASS IDENTIFIER ')' Expr
-  81       | Expr "%%" intConstant
+  81       | Expr NEWSAMEARRAY Expr
 
   82  Constant : LITERAL
   83           | NULL
@@ -947,7 +947,7 @@ state 81
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	OR  shift 117
@@ -955,15 +955,15 @@ state 81
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	.  error
 
@@ -1024,6 +1024,7 @@ state 89
 	GREATER_EQUAL  reduce 55
 	EQUAL  reduce 55
 	NOT_EQUAL  reduce 55
+	NEWSAMEARRAY  reduce 55
 	'+'  reduce 55
 	'-'  reduce 55
 	'*'  reduce 55
@@ -1032,7 +1033,6 @@ state 89
 	'>'  reduce 55
 	'<'  reduce 55
 	'.'  reduce 55
-	"%%"  reduce 55
 	'['  reduce 55
 
 
@@ -1046,6 +1046,7 @@ state 90
 	GREATER_EQUAL  reduce 56
 	EQUAL  reduce 56
 	NOT_EQUAL  reduce 56
+	NEWSAMEARRAY  reduce 56
 	'+'  reduce 56
 	'-'  reduce 56
 	'*'  reduce 56
@@ -1054,7 +1055,6 @@ state 90
 	'>'  reduce 56
 	'<'  reduce 56
 	'.'  reduce 56
-	"%%"  reduce 56
 	';'  reduce 41
 	')'  reduce 41
 	'['  reduce 56
@@ -1200,7 +1200,7 @@ state 98
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	ReturnStmt : RETURN Expr .  (99)
 
 	AND  shift 116
@@ -1209,15 +1209,15 @@ state 98
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	';'  reduce 99
 
@@ -1323,6 +1323,7 @@ state 107
 	.  error
 
 
+108: shift/reduce conflict (shift 122, reduce 72) on NEWSAMEARRAY
 state 108
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -1340,9 +1341,10 @@ state 108
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
 	Expr : '-' Expr .  (72)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'.'  shift 129
+	NEWSAMEARRAY  shift 122
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 72
 	OR  reduce 72
@@ -1357,7 +1359,6 @@ state 108
 	'%'  reduce 72
 	'>'  reduce 72
 	'<'  reduce 72
-	"%%"  reduce 72
 	','  reduce 72
 	';'  reduce 72
 	')'  reduce 72
@@ -1365,6 +1366,7 @@ state 108
 	':'  reduce 72
 
 
+109: shift/reduce conflict (shift 122, reduce 73) on NEWSAMEARRAY
 state 109
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -1382,9 +1384,10 @@ state 109
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
 	Expr : '!' Expr .  (73)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'.'  shift 129
+	NEWSAMEARRAY  shift 122
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 73
 	OR  reduce 73
@@ -1399,7 +1402,6 @@ state 109
 	'%'  reduce 73
 	'>'  reduce 73
 	'<'  reduce 73
-	"%%"  reduce 73
 	','  reduce 73
 	';'  reduce 73
 	')'  reduce 73
@@ -1431,7 +1433,7 @@ state 111
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
 	Expr : '(' Expr . ')'  (71)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	OR  shift 117
@@ -1439,15 +1441,15 @@ state 111
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	')'  shift 151
 	'['  shift 131
 	.  error
@@ -1637,7 +1639,7 @@ state 121
 
 
 state 122
-	Expr : Expr '+' . Expr  (58)
+	Expr : Expr NEWSAMEARRAY . Expr  (81)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1663,7 +1665,7 @@ state 122
 
 
 state 123
-	Expr : Expr '-' . Expr  (59)
+	Expr : Expr '+' . Expr  (58)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1689,7 +1691,7 @@ state 123
 
 
 state 124
-	Expr : Expr '*' . Expr  (60)
+	Expr : Expr '-' . Expr  (59)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1715,7 +1717,7 @@ state 124
 
 
 state 125
-	Expr : Expr '/' . Expr  (61)
+	Expr : Expr '*' . Expr  (60)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1741,7 +1743,7 @@ state 125
 
 
 state 126
-	Expr : Expr '%' . Expr  (62)
+	Expr : Expr '/' . Expr  (61)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1767,7 +1769,7 @@ state 126
 
 
 state 127
-	Expr : Expr '>' . Expr  (66)
+	Expr : Expr '%' . Expr  (62)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1793,7 +1795,7 @@ state 127
 
 
 state 128
-	Expr : Expr '<' . Expr  (65)
+	Expr : Expr '>' . Expr  (66)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1819,16 +1821,35 @@ state 128
 
 
 state 129
-	Receiver : Expr '.' .  (49)
+	Expr : Expr '<' . Expr  (65)
+	Receiver : .  (50)
 
-	.  reduce 49
+	NULL  shift 57
+	THIS  shift 58
+	NEW  shift 64
+	READ_INTEGER  shift 66
+	READ_LINE  shift 67
+	LITERAL  shift 68
+	INSTANCEOF  shift 69
+	'-'  shift 71
+	'!'  shift 72
+	'('  shift 73
+	'['  shift 74
+	VAR  shift 76
+	IDENTIFIER  reduce 50
+
+	Expr  goto 167
+	LValue  goto 99
+	Call  goto 100
+	Receiver  goto 91
+	Constant  goto 92
+	ArrayConstant  goto 93
 
 
 state 130
-	Expr : Expr "%%" . intConstant  (81)
+	Receiver : Expr '.' .  (49)
 
-	intConstant  shift 167
-	.  error
+	.  reduce 49
 
 
 state 131
@@ -1912,6 +1933,7 @@ state 136
 	GREATER_EQUAL  reduce 51
 	EQUAL  reduce 51
 	NOT_EQUAL  reduce 51
+	NEWSAMEARRAY  reduce 51
 	'+'  reduce 51
 	'-'  reduce 51
 	'*'  reduce 51
@@ -1921,7 +1943,6 @@ state 136
 	'>'  reduce 51
 	'<'  reduce 51
 	'.'  reduce 51
-	"%%"  reduce 51
 	','  reduce 51
 	';'  reduce 51
 	')'  reduce 51
@@ -1946,7 +1967,7 @@ state 137
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	WhileStmt : WHILE '(' Expr . ')' Stmt  (93)
 
 	AND  shift 116
@@ -1955,15 +1976,15 @@ state 137
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	')'  shift 171
 	'['  shift 131
 	.  error
@@ -1992,7 +2013,7 @@ state 139
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	IfStmt : IF '(' Expr . ')' Stmt ElseClause  (96)
 
 	AND  shift 116
@@ -2001,15 +2022,15 @@ state 139
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	')'  shift 173
 	'['  shift 131
 	.  error
@@ -2101,7 +2122,7 @@ state 144
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	ExprList : Expr .  (92)
 
 	AND  shift 116
@@ -2110,15 +2131,15 @@ state 144
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	','  reduce 92
 	')'  reduce 92
@@ -2162,7 +2183,7 @@ state 148
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
 	Expr : INSTANCEOF '(' Expr . ',' IDENTIFIER ')'  (79)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	OR  shift 117
@@ -2170,15 +2191,15 @@ state 148
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	','  shift 181
 	'['  shift 131
 	.  error
@@ -2222,6 +2243,7 @@ state 153
 	.  reduce 85
 
 
+154: shift/reduce conflict (shift 122, reduce 69) on NEWSAMEARRAY
 state 154
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2239,21 +2261,21 @@ state 154
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr AND Expr .  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	LESS_EQUAL  shift 118
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 69
 	OR  reduce 69
@@ -2264,6 +2286,7 @@ state 154
 	':'  reduce 69
 
 
+155: shift/reduce conflict (shift 122, reduce 70) on NEWSAMEARRAY
 state 155
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2281,22 +2304,22 @@ state 155
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
 	Expr : Expr OR Expr .  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	LESS_EQUAL  shift 118
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	OR  reduce 70
 	','  reduce 70
@@ -2306,6 +2329,7 @@ state 155
 	':'  reduce 70
 
 
+156: shift/reduce conflict (shift 122, reduce 67) on NEWSAMEARRAY
 state 156
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2323,15 +2347,15 @@ state 156
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 67
 	OR  reduce 67
@@ -2344,6 +2368,7 @@ state 156
 	':'  reduce 67
 
 
+157: shift/reduce conflict (shift 122, reduce 68) on NEWSAMEARRAY
 state 157
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2361,15 +2386,15 @@ state 157
 	Expr : Expr GREATER_EQUAL Expr .  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 68
 	OR  reduce 68
@@ -2382,6 +2407,7 @@ state 157
 	':'  reduce 68
 
 
+158: shift/reduce conflict (shift 122, reduce 63) on NEWSAMEARRAY
 state 158
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2399,19 +2425,19 @@ state 158
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	LESS_EQUAL  shift 118
 	GREATER_EQUAL  shift 119
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 63
 	OR  reduce 63
@@ -2422,6 +2448,7 @@ state 158
 	':'  reduce 63
 
 
+159: shift/reduce conflict (shift 122, reduce 64) on NEWSAMEARRAY
 state 159
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2439,19 +2466,19 @@ state 159
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	LESS_EQUAL  shift 118
 	GREATER_EQUAL  shift 119
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 64
 	OR  reduce 64
@@ -2462,7 +2489,66 @@ state 159
 	':'  reduce 64
 
 
+160: shift/reduce conflict (shift 116, reduce 81) on AND
+160: shift/reduce conflict (shift 117, reduce 81) on OR
+160: shift/reduce conflict (shift 118, reduce 81) on LESS_EQUAL
+160: shift/reduce conflict (shift 119, reduce 81) on GREATER_EQUAL
+160: shift/reduce conflict (shift 120, reduce 81) on EQUAL
+160: shift/reduce conflict (shift 121, reduce 81) on NOT_EQUAL
+160: shift/reduce conflict (shift 122, reduce 81) on NEWSAMEARRAY
+160: shift/reduce conflict (shift 123, reduce 81) on '+'
+160: shift/reduce conflict (shift 124, reduce 81) on '-'
+160: shift/reduce conflict (shift 125, reduce 81) on '*'
+160: shift/reduce conflict (shift 126, reduce 81) on '/'
+160: shift/reduce conflict (shift 127, reduce 81) on '%'
+160: shift/reduce conflict (shift 128, reduce 81) on '>'
+160: shift/reduce conflict (shift 129, reduce 81) on '<'
+160: shift/reduce conflict (shift 130, reduce 81) on '.'
+160: shift/reduce conflict (shift 131, reduce 81) on '['
 state 160
+	Receiver : Expr . '.'  (49)
+	LValue : Expr . '[' Expr ']'  (52)
+	Expr : Expr . '+' Expr  (58)
+	Expr : Expr . '-' Expr  (59)
+	Expr : Expr . '*' Expr  (60)
+	Expr : Expr . '/' Expr  (61)
+	Expr : Expr . '%' Expr  (62)
+	Expr : Expr . EQUAL Expr  (63)
+	Expr : Expr . NOT_EQUAL Expr  (64)
+	Expr : Expr . '<' Expr  (65)
+	Expr : Expr . '>' Expr  (66)
+	Expr : Expr . LESS_EQUAL Expr  (67)
+	Expr : Expr . GREATER_EQUAL Expr  (68)
+	Expr : Expr . AND Expr  (69)
+	Expr : Expr . OR Expr  (70)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
+	Expr : Expr NEWSAMEARRAY Expr .  (81)
+
+	AND  shift 116
+	OR  shift 117
+	LESS_EQUAL  shift 118
+	GREATER_EQUAL  shift 119
+	EQUAL  shift 120
+	NOT_EQUAL  shift 121
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
+	'['  shift 131
+	','  reduce 81
+	';'  reduce 81
+	')'  reduce 81
+	']'  reduce 81
+	':'  reduce 81
+
+
+161: shift/reduce conflict (shift 122, reduce 58) on NEWSAMEARRAY
+state 161
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
 	Expr : Expr . '+' Expr  (58)
@@ -2479,13 +2565,13 @@ state 160
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 58
 	OR  reduce 58
@@ -2504,7 +2590,8 @@ state 160
 	':'  reduce 58
 
 
-state 161
+162: shift/reduce conflict (shift 122, reduce 59) on NEWSAMEARRAY
+state 162
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
 	Expr : Expr . '+' Expr  (58)
@@ -2521,13 +2608,13 @@ state 161
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 59
 	OR  reduce 59
@@ -2546,7 +2633,8 @@ state 161
 	':'  reduce 59
 
 
-state 162
+163: shift/reduce conflict (shift 122, reduce 60) on NEWSAMEARRAY
+state 163
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
 	Expr : Expr . '+' Expr  (58)
@@ -2563,9 +2651,10 @@ state 162
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'.'  shift 129
+	NEWSAMEARRAY  shift 122
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 60
 	OR  reduce 60
@@ -2580,7 +2669,6 @@ state 162
 	'%'  reduce 60
 	'>'  reduce 60
 	'<'  reduce 60
-	"%%"  reduce 60
 	','  reduce 60
 	';'  reduce 60
 	')'  reduce 60
@@ -2588,7 +2676,8 @@ state 162
 	':'  reduce 60
 
 
-state 163
+164: shift/reduce conflict (shift 122, reduce 61) on NEWSAMEARRAY
+state 164
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
 	Expr : Expr . '+' Expr  (58)
@@ -2605,9 +2694,10 @@ state 163
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'.'  shift 129
+	NEWSAMEARRAY  shift 122
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 61
 	OR  reduce 61
@@ -2622,7 +2712,6 @@ state 163
 	'%'  reduce 61
 	'>'  reduce 61
 	'<'  reduce 61
-	"%%"  reduce 61
 	','  reduce 61
 	';'  reduce 61
 	')'  reduce 61
@@ -2630,7 +2719,8 @@ state 163
 	':'  reduce 61
 
 
-state 164
+165: shift/reduce conflict (shift 122, reduce 62) on NEWSAMEARRAY
+state 165
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
 	Expr : Expr . '+' Expr  (58)
@@ -2647,9 +2737,10 @@ state 164
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'.'  shift 129
+	NEWSAMEARRAY  shift 122
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 62
 	OR  reduce 62
@@ -2664,7 +2755,6 @@ state 164
 	'%'  reduce 62
 	'>'  reduce 62
 	'<'  reduce 62
-	"%%"  reduce 62
 	','  reduce 62
 	';'  reduce 62
 	')'  reduce 62
@@ -2672,7 +2762,8 @@ state 164
 	':'  reduce 62
 
 
-state 165
+166: shift/reduce conflict (shift 122, reduce 66) on NEWSAMEARRAY
+state 166
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
 	Expr : Expr . '+' Expr  (58)
@@ -2689,15 +2780,15 @@ state 165
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 66
 	OR  reduce 66
@@ -2710,7 +2801,8 @@ state 165
 	':'  reduce 66
 
 
-state 166
+167: shift/reduce conflict (shift 122, reduce 65) on NEWSAMEARRAY
+state 167
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
 	Expr : Expr . '+' Expr  (58)
@@ -2727,15 +2819,15 @@ state 166
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'.'  shift 130
 	'['  shift 131
 	AND  reduce 65
 	OR  reduce 65
@@ -2746,12 +2838,6 @@ state 166
 	')'  reduce 65
 	']'  reduce 65
 	':'  reduce 65
-
-
-state 167
-	Expr : Expr "%%" intConstant .  (81)
-
-	.  reduce 81
 
 
 state 168
@@ -2771,7 +2857,7 @@ state 168
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	OR  shift 117
@@ -2779,15 +2865,15 @@ state 168
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	']'  shift 185
 	.  error
@@ -2810,7 +2896,7 @@ state 169
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	OR  shift 117
@@ -2818,15 +2904,15 @@ state 169
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	';'  reduce 40
 	')'  reduce 40
@@ -3014,7 +3100,7 @@ state 174
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	OR  shift 117
@@ -3022,15 +3108,15 @@ state 174
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	':'  shift 191
 	.  error
@@ -3072,7 +3158,7 @@ state 178
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
 	Expr : NEW Type '[' Expr . ']'  (78)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	OR  shift 117
@@ -3080,15 +3166,15 @@ state 178
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	']'  shift 193
 	.  error
@@ -3234,7 +3320,7 @@ state 189
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	ForStmt : FOR '(' SimpleStmt ';' Expr . ';' SimpleStmt ')' Stmt  (94)
 
 	AND  shift 116
@@ -3243,15 +3329,15 @@ state 189
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	';'  shift 199
 	'['  shift 131
 	.  error
@@ -3378,7 +3464,7 @@ state 194
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	ExprList : ExprList ',' Expr .  (91)
 
 	AND  shift 116
@@ -3387,15 +3473,15 @@ state 194
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	'['  shift 131
 	','  reduce 91
 	')'  reduce 91
@@ -3425,7 +3511,7 @@ state 196
 	Expr : Expr . GREATER_EQUAL Expr  (68)
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
 	AND  shift 116
 	OR  shift 117
@@ -3433,20 +3519,21 @@ state 196
 	GREATER_EQUAL  shift 119
 	EQUAL  shift 120
 	NOT_EQUAL  shift 121
-	'+'  shift 122
-	'-'  shift 123
-	'*'  shift 124
-	'/'  shift 125
-	'%'  shift 126
-	'>'  shift 127
-	'<'  shift 128
-	'.'  shift 129
-	"%%"  shift 130
+	NEWSAMEARRAY  shift 122
+	'+'  shift 123
+	'-'  shift 124
+	'*'  shift 125
+	'/'  shift 126
+	'%'  shift 127
+	'>'  shift 128
+	'<'  shift 129
+	'.'  shift 130
 	')'  shift 204
 	'['  shift 131
 	.  error
 
 
+197: shift/reduce conflict (shift 122, reduce 80) on NEWSAMEARRAY
 state 197
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -3464,9 +3551,29 @@ state 197
 	Expr : Expr . AND Expr  (69)
 	Expr : Expr . OR Expr  (70)
 	Expr : '(' CLASS IDENTIFIER ')' Expr .  (80)
-	Expr : Expr . "%%" intConstant  (81)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
 
-	.  reduce 80
+	NEWSAMEARRAY  shift 122
+	AND  reduce 80
+	OR  reduce 80
+	LESS_EQUAL  reduce 80
+	GREATER_EQUAL  reduce 80
+	EQUAL  reduce 80
+	NOT_EQUAL  reduce 80
+	'+'  reduce 80
+	'-'  reduce 80
+	'*'  reduce 80
+	'/'  reduce 80
+	'%'  reduce 80
+	'>'  reduce 80
+	'<'  reduce 80
+	'.'  reduce 80
+	','  reduce 80
+	';'  reduce 80
+	')'  reduce 80
+	'['  reduce 80
+	']'  reduce 80
+	':'  reduce 80
 
 
 state 198
@@ -3663,5 +3770,24 @@ state 209
 	.  reduce 94
 
 
-58 terminals, 36 nonterminals
+State 108 contains 1 shift/reduce conflict.
+State 109 contains 1 shift/reduce conflict.
+State 154 contains 1 shift/reduce conflict.
+State 155 contains 1 shift/reduce conflict.
+State 156 contains 1 shift/reduce conflict.
+State 157 contains 1 shift/reduce conflict.
+State 158 contains 1 shift/reduce conflict.
+State 159 contains 1 shift/reduce conflict.
+State 160 contains 16 shift/reduce conflicts.
+State 161 contains 1 shift/reduce conflict.
+State 162 contains 1 shift/reduce conflict.
+State 163 contains 1 shift/reduce conflict.
+State 164 contains 1 shift/reduce conflict.
+State 165 contains 1 shift/reduce conflict.
+State 166 contains 1 shift/reduce conflict.
+State 167 contains 1 shift/reduce conflict.
+State 197 contains 1 shift/reduce conflict.
+
+
+57 terminals, 36 nonterminals
 102 grammar rules, 210 states
