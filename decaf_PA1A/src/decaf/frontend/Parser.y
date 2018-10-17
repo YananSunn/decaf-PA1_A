@@ -32,7 +32,7 @@ import java.util.*;
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
 
-%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY DEFAULT
+%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY DEFAULT IN
 
 %token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.' '%%' '++'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
@@ -411,6 +411,14 @@ Expr            :	LValue
                 |	Expr '[' Expr ']' DEFAULT Expr
                 	{
                 		$$.expr = new Tree.DefaultArray($1.expr, $3.expr, $6.expr, $5.loc);
+                	}
+                |	'[' Expr FOR IDENTIFIER IN Expr IF Expr ']'
+                	{
+                		$$.expr = new Tree.CompArray($2.expr, $4.ident, $6.expr, $8.expr, $1.loc);
+                	}
+                |	'[' Expr FOR IDENTIFIER IN Expr ']'
+                	{
+                		$$.expr = new Tree.CompArray($2.expr, $4.ident, $6.expr, null, $1.loc);
                 	}
                 ;
 	

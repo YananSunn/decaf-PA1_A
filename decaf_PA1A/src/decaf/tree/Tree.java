@@ -289,8 +289,9 @@ public abstract class Tree {
     public static final int JOINTARRAY = NEWSAMEARRAY + 1;
     public static final int ACCESSARRAY = JOINTARRAY + 1;
     public static final int DEFAULTARRAY = ACCESSARRAY + 1;
+    public static final int COMPARRAY = DEFAULTARRAY + 1;
     
-    public static final int READLINEEXPR = DEFAULTARRAY + 1;
+    public static final int READLINEEXPR = COMPARRAY + 1;
 
     public static final int PRINT = READLINEEXPR + 1;
     
@@ -1307,6 +1308,44 @@ public abstract class Tree {
     	}
     }
     
+    public static class CompArray extends Expr {
+
+    	public Expr expr1;
+    	public Expr expr2;
+	    public Expr expr3;
+	    public String name;
+
+        public CompArray(Expr expr1, String name, Expr expr2, Expr expr3, Location loc) {
+            super(COMPARRAY, loc);
+    		this.expr1 = expr1;
+    		this.name = name;
+			this.expr2 = expr2;
+			this.expr3 = expr3;
+       }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitCompArray(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("array comp");
+    		pw.incIndent();
+    		pw.println("varbind " + name);
+    		expr2.printTo(pw);
+    		if(expr3 != null) {
+    			expr3.printTo(pw);
+    		}
+    		else {
+    			pw.println("boolconst true");
+    		}
+    		expr1.printTo(pw);
+    		pw.decIndent();
+    	}
+    }
+    
+    
 
     /**
       * instanceof expression
@@ -1722,6 +1761,10 @@ public abstract class Tree {
         }
         
         public void visitDefaultArray(DefaultArray that){
+            visitTree(that);
+        }
+        
+        public void visitCompArray(CompArray that){
             visitTree(that);
         }
         

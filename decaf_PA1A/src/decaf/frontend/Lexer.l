@@ -66,6 +66,7 @@ WHITESPACE			= ([ \t]+)
 "sealed"			{ return keyword(Parser.SEALED);		}
 "var"				{ return keyword(Parser.VAR);			}
 "default"			{ return keyword(Parser.DEFAULT);		}
+"in"				{ return keyword(Parser.IN);			}
 
 "while"				{ return keyword(Parser.WHILE);			}
 "for"				{ return keyword(Parser.FOR);			}
