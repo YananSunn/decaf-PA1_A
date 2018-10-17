@@ -32,7 +32,7 @@ import java.util.*;
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
 
-%token SCOPY
+%token SCOPY SEALED
 
 %token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
@@ -107,6 +107,14 @@ ClassDef        :	CLASS IDENTIFIER ExtendsClause '{' FieldList '}'
 					{
 						$$.cdef = new Tree.ClassDef($2.ident, $3.ident, $5.flist, $1.loc);
 					}
+				|	SEALED CLASS IDENTIFIER EXTENDS IDENTIFIER '{' FieldList '}'
+					{
+						$$.cdef = new Tree.Sealed($3.ident, $5.ident, $7.flist, $1.loc);
+					}
+				|	SEALED CLASS IDENTIFIER '{' FieldList '}'
+					{
+						$$.cdef = new Tree.Sealed($3.ident, null, $5.flist, $1.loc);
+					}
                 ;
 
 ExtendsClause	:	EXTENDS IDENTIFIER
@@ -161,14 +169,14 @@ FunctionDef    :	STATIC Type IDENTIFIER '(' Formals ')' StmtBlock
 					{
 						$$.fdef = new MethodDef(false, $2.ident, $1.type, $4.vlist, (Block) $6.stmt, $2.loc);
 					}
+					
                 ;
-
 StmtBlock       :	'{' StmtList '}'
 					{
 						$$.stmt = new Block($2.slist, $1.loc);
 					}
                 ;
-	
+
 StmtList        :	StmtList Stmt
 					{
 						$$.slist.add($2.stmt);

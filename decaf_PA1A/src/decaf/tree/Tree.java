@@ -277,9 +277,10 @@ public abstract class Tree {
     public static final int NULL = MOD + 1;
     public static final int CALLEXPR = NULL + 1;
     public static final int THISEXPR = CALLEXPR + 1;
- 
+    
     public static final int SCOPYEXPR = THISEXPR + 1;
-    public static final int READINTEXPR = SCOPYEXPR + 1;
+    public static final int SEALED = SCOPYEXPR + 1;
+    public static final int READINTEXPR = SEALED + 1;
     
     public static final int READLINEEXPR = READINTEXPR + 1;
     public static final int PRINT = READLINEEXPR + 1;
@@ -371,6 +372,29 @@ public abstract class Tree {
     			f.printTo(pw);
     		}
     		pw.decIndent();
+    	}
+   }
+    
+	public static class Sealed extends ClassDef {
+    	
+//    	public String name;
+//    	public String parent;
+//    	public List<Tree> fields;
+
+        public Sealed(String name, String parent, List<Tree> fields,
+    			Location loc) {
+        	super(name, parent, fields, loc);
+        }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitSealed(this);
+        }
+        
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("sealed class " + name + " "
+    				+ (parent != null ? parent : "<empty>"));
     	}
    }
 
@@ -1046,7 +1070,7 @@ public abstract class Tree {
     	}
    }
     
-    public static class SCopyExpr extends Expr {
+    public static class SCopyExpr extends Tree {
 
     	public String ident;
     	public Expr expr;
@@ -1432,6 +1456,10 @@ public abstract class Tree {
         }
         
         public void visitSCopyExpr(SCopyExpr that) {
+            visitTree(that);
+        }
+        
+        public void visitSealed(Sealed that) {
             visitTree(that);
         }
 
