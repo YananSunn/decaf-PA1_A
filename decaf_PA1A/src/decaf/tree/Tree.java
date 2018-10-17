@@ -281,8 +281,11 @@ public abstract class Tree {
     public static final int SCOPYEXPR = THISEXPR + 1;
     public static final int SEALED = SCOPYEXPR + 1;
     public static final int READINTEXPR = SEALED + 1;
+    public static final int GUARDED = READINTEXPR + 1;
+    public static final int IFSUBSTMT = GUARDED + 1;
     
-    public static final int READLINEEXPR = READINTEXPR + 1;
+    
+    public static final int READLINEEXPR = IFSUBSTMT + 1;
     public static final int PRINT = READLINEEXPR + 1;
     
     /**
@@ -539,6 +542,66 @@ public abstract class Tree {
     		pw.decIndent();
     	}
    }
+    
+    public static class Guarded extends Tree
+    {
+         public List<Tree> subStmt;
+        public Tree last;
+         public Guarded(List<Tree> subStmt, Tree last, Location loc)
+        {
+            super(GUARDED, loc);
+            this.subStmt = subStmt;
+            this.last = last;
+        }
+         @Override
+        public void accept(Visitor v)
+        {
+            v.visitGuarded(this);
+        }
+         @Override
+        public void printTo(IndentPrintWriter pw)
+        {
+            pw.println("guarded");
+            pw.incIndent();
+            if(subStmt != null) {
+            	for (Tree stmt : subStmt)
+                    stmt.printTo(pw);
+                last.printTo(pw);
+            }
+            else {
+            	pw.println("<empty>");
+            }
+            pw.decIndent();
+        }
+    }
+     /**
+     * A Guard
+     */
+    public static class IfSubStmt extends Tree
+    {
+         public Expr expr;
+        public Tree stmt;
+         public IfSubStmt(Expr expr, Tree stmt, Location loc)
+        {
+            super(IFSUBSTMT, loc);
+            this.expr = expr;
+            this.stmt = stmt;
+        }
+         @Override
+        public void accept(Visitor v)
+        {
+            v.visitIfSubStmt(this);
+        }
+         @Override
+        public void printTo(IndentPrintWriter pw)
+        {
+            pw.println("guard");
+            pw.incIndent();
+            expr.printTo(pw);
+            stmt.printTo(pw);
+            pw.decIndent();
+        }
+    }
 
     /**
       * A for loop.
@@ -1462,6 +1525,15 @@ public abstract class Tree {
         public void visitSealed(Sealed that) {
             visitTree(that);
         }
+        
+        public void visitGuarded(Guarded that){
+            visitTree(that);
+        }
+        
+         public void visitIfSubStmt(IfSubStmt that){
+            visitTree(that);
+        }
+
 
         public void visitLValue(LValue that) {
             visitTree(that);

@@ -32,7 +32,7 @@ import java.util.*;
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
 
-%token SCOPY SEALED
+%token SCOPY SEALED GUARDED
 
 %token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
@@ -210,6 +210,7 @@ Stmt		    :	VariableDef
                 |	PrintStmt ';'
                 |	BreakStmt ';'
                 |	StmtBlock
+                |	GuardedStmt
                 ;
 
 SimpleStmt      :	LValue '=' Expr
@@ -224,6 +225,36 @@ SimpleStmt      :	LValue '=' Expr
                 	{
                 		$$ = new SemValue();
                 	}
+                ;
+
+GuardedStmt     :   IF '{' IfBranchList IfSubStmt '}'
+                    {
+                        $$.stmt = new Tree.Guarded($3.slist, $4.stmt, $1.loc);
+                    }
+                |	IF '{' '}'
+                    {
+                        $$.stmt = new Tree.Guarded(null, null, $1.loc);
+                    }
+                ;
+IfSubStmt       :   Expr ':' Stmt
+                    {
+                        $$.stmt = new Tree.IfSubStmt($1.expr, $3.stmt, $1.loc);
+                    }
+                ;
+IfBranch        :   Expr ':' Stmt GUARDED
+                    {
+                        $$.stmt = new Tree.IfSubStmt($1.expr, $3.stmt, $1.loc);
+                    }
+                ;
+IfBranchList    :   IfBranchList IfBranch
+                    {
+                        $$.slist.add($2.stmt);
+                    }
+                |   /* empty */
+                    {
+                        $$ = new SemValue();
+                        $$.slist = new ArrayList<Tree>();
+                    }
                 ;
 
 Receiver     	:	Expr '.'
