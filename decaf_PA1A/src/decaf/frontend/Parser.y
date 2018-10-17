@@ -32,25 +32,25 @@ import java.util.*;
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
 
-%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY
+%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY DEFAULT
 
 %token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.' '%%' '++'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
+
 
 %left OR
 %left AND 
 %nonassoc EQUAL NOT_EQUAL
 %nonassoc LESS_EQUAL GREATER_EQUAL '<' '>'
+%right JOINTARRAY
+%left  NEWSAMEARRAY
 %left  '+' '-'
-
-%left  '%%'
-%right '++'
 %left  '*' '/' '%' ',' 
-
 %nonassoc UMINUS '!' 
 %nonassoc '[' '.' 
 %nonassoc ')' EMPTY
 %nonassoc ELSE
+%nonassoc DEFAULT
 
 %start Program
 
@@ -407,6 +407,10 @@ Expr            :	LValue
                 |	Expr '[' Expr ':' Expr ']'
                 	{
                 		$$.expr = new Tree.AccessArray($1.expr, $3.expr, $5.expr, $1.loc);
+                	}
+                |	Expr '[' Expr ']' DEFAULT Expr
+                	{
+                		$$.expr = new Tree.DefaultArray($1.expr, $3.expr, $6.expr, $5.loc);
                 	}
                 ;
 	

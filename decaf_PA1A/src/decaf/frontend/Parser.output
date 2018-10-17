@@ -105,38 +105,39 @@
   81       | Expr NEWSAMEARRAY Expr
   82       | Expr JOINTARRAY Expr
   83       | Expr '[' Expr ':' Expr ']'
+  84       | Expr '[' Expr ']' DEFAULT Expr
 
-  84  Constant : LITERAL
-  85           | NULL
-  86           | ArrayConstant
+  85  Constant : LITERAL
+  86           | NULL
+  87           | ArrayConstant
 
-  87  ArrayConstant : '[' ConstantList ']'
+  88  ArrayConstant : '[' ConstantList ']'
 
-  88  ConstantList : ConstantList ',' Constant
-  89               |
-  90               | Constant
+  89  ConstantList : ConstantList ',' Constant
+  90               |
+  91               | Constant
 
-  91  Actuals : ExprList
-  92          |
+  92  Actuals : ExprList
+  93          |
 
-  93  ExprList : ExprList ',' Expr
-  94           | Expr
+  94  ExprList : ExprList ',' Expr
+  95           | Expr
 
-  95  WhileStmt : WHILE '(' Expr ')' Stmt
+  96  WhileStmt : WHILE '(' Expr ')' Stmt
 
-  96  ForStmt : FOR '(' SimpleStmt ';' Expr ';' SimpleStmt ')' Stmt
+  97  ForStmt : FOR '(' SimpleStmt ';' Expr ';' SimpleStmt ')' Stmt
 
-  97  BreakStmt : BREAK
+  98  BreakStmt : BREAK
 
-  98  IfStmt : IF '(' Expr ')' Stmt ElseClause
+  99  IfStmt : IF '(' Expr ')' Stmt ElseClause
 
-  99  ElseClause : ELSE Stmt
- 100             |
+ 100  ElseClause : ELSE Stmt
+ 101             |
 
- 101  ReturnStmt : RETURN Expr
- 102             | RETURN
+ 102  ReturnStmt : RETURN Expr
+ 103             | RETURN
 
- 103  PrintStmt : PRINT '(' ExprList ')'
+ 104  PrintStmt : PRINT '(' ExprList ')'
 
 state 0
 	$accept : . Program $end  (0)
@@ -675,9 +676,9 @@ state 56
 
 
 state 57
-	Constant : NULL .  (85)
+	Constant : NULL .  (86)
 
-	.  reduce 85
+	.  reduce 86
 
 
 state 58
@@ -687,14 +688,14 @@ state 58
 
 
 state 59
-	WhileStmt : WHILE . '(' Expr ')' Stmt  (95)
+	WhileStmt : WHILE . '(' Expr ')' Stmt  (96)
 
 	'('  shift 94
 	.  error
 
 
 state 60
-	ForStmt : FOR . '(' SimpleStmt ';' Expr ';' SimpleStmt ')' Stmt  (96)
+	ForStmt : FOR . '(' SimpleStmt ';' Expr ';' SimpleStmt ')' Stmt  (97)
 
 	'('  shift 95
 	.  error
@@ -703,7 +704,7 @@ state 60
 state 61
 	GuardedStmt : IF . '{' IfBranchList IfSubStmt '}'  (43)
 	GuardedStmt : IF . '{' '}'  (44)
-	IfStmt : IF . '(' Expr ')' Stmt ElseClause  (98)
+	IfStmt : IF . '(' Expr ')' Stmt ElseClause  (99)
 
 	'('  shift 96
 	'{'  shift 97
@@ -711,8 +712,8 @@ state 61
 
 
 state 62
-	ReturnStmt : RETURN . Expr  (101)
-	ReturnStmt : RETURN .  (102)
+	ReturnStmt : RETURN . Expr  (102)
+	ReturnStmt : RETURN .  (103)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -728,7 +729,7 @@ state 62
 	'['  shift 74
 	VAR  shift 76
 	IDENTIFIER  reduce 50
-	';'  reduce 102
+	';'  reduce 103
 
 	Expr  goto 98
 	LValue  goto 99
@@ -739,9 +740,9 @@ state 62
 
 
 state 63
-	BreakStmt : BREAK .  (97)
+	BreakStmt : BREAK .  (98)
 
-	.  reduce 97
+	.  reduce 98
 
 
 state 64
@@ -760,7 +761,7 @@ state 64
 
 
 state 65
-	PrintStmt : PRINT . '(' ExprList ')'  (103)
+	PrintStmt : PRINT . '(' ExprList ')'  (104)
 
 	'('  shift 103
 	.  error
@@ -781,9 +782,9 @@ state 67
 
 
 state 68
-	Constant : LITERAL .  (84)
+	Constant : LITERAL .  (85)
 
-	.  reduce 84
+	.  reduce 85
 
 
 state 69
@@ -881,14 +882,14 @@ state 73
 
 
 state 74
-	ArrayConstant : '[' . ConstantList ']'  (87)
-	ConstantList : .  (89)
+	ArrayConstant : '[' . ConstantList ']'  (88)
+	ConstantList : .  (90)
 
 	NULL  shift 57
 	LITERAL  shift 68
 	'['  shift 74
-	','  reduce 89
-	']'  reduce 89
+	','  reduce 90
+	']'  reduce 90
 
 	Constant  goto 112
 	ArrayConstant  goto 93
@@ -952,6 +953,7 @@ state 81
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -1082,13 +1084,13 @@ state 92
 
 
 state 93
-	Constant : ArrayConstant .  (86)
+	Constant : ArrayConstant .  (87)
 
-	.  reduce 86
+	.  reduce 87
 
 
 state 94
-	WhileStmt : WHILE '(' . Expr ')' Stmt  (95)
+	WhileStmt : WHILE '(' . Expr ')' Stmt  (96)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1114,7 +1116,7 @@ state 94
 
 
 state 95
-	ForStmt : FOR '(' . SimpleStmt ';' Expr ';' SimpleStmt ')' Stmt  (96)
+	ForStmt : FOR '(' . SimpleStmt ';' Expr ';' SimpleStmt ')' Stmt  (97)
 	SimpleStmt : .  (42)
 	Receiver : .  (50)
 
@@ -1143,7 +1145,7 @@ state 95
 
 
 state 96
-	IfStmt : IF '(' . Expr ')' Stmt ElseClause  (98)
+	IfStmt : IF '(' . Expr ')' Stmt ElseClause  (99)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1210,7 +1212,8 @@ state 98
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
-	ReturnStmt : RETURN Expr .  (101)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
+	ReturnStmt : RETURN Expr .  (102)
 
 	AND  shift 116
 	OR  shift 117
@@ -1229,7 +1232,7 @@ state 98
 	'<'  shift 130
 	'.'  shift 131
 	'['  shift 132
-	';'  reduce 101
+	';'  reduce 102
 
 
 state 99
@@ -1260,7 +1263,7 @@ state 102
 
 
 state 103
-	PrintStmt : PRINT '(' . ExprList ')'  (103)
+	PrintStmt : PRINT '(' . ExprList ')'  (104)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -1333,8 +1336,6 @@ state 107
 	.  error
 
 
-108: shift/reduce conflict (shift 122, reduce 72) on NEWSAMEARRAY
-108: shift/reduce conflict (shift 123, reduce 72) on JOINTARRAY
 state 108
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -1355,9 +1356,8 @@ state 108
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
 	'.'  shift 131
 	'['  shift 132
 	AND  reduce 72
@@ -1366,6 +1366,8 @@ state 108
 	GREATER_EQUAL  reduce 72
 	EQUAL  reduce 72
 	NOT_EQUAL  reduce 72
+	NEWSAMEARRAY  reduce 72
+	JOINTARRAY  reduce 72
 	'+'  reduce 72
 	'-'  reduce 72
 	'*'  reduce 72
@@ -1380,8 +1382,6 @@ state 108
 	':'  reduce 72
 
 
-109: shift/reduce conflict (shift 122, reduce 73) on NEWSAMEARRAY
-109: shift/reduce conflict (shift 123, reduce 73) on JOINTARRAY
 state 109
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -1402,9 +1402,8 @@ state 109
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
 	'.'  shift 131
 	'['  shift 132
 	AND  reduce 73
@@ -1413,6 +1412,8 @@ state 109
 	GREATER_EQUAL  reduce 73
 	EQUAL  reduce 73
 	NOT_EQUAL  reduce 73
+	NEWSAMEARRAY  reduce 73
+	JOINTARRAY  reduce 73
 	'+'  reduce 73
 	'-'  reduce 73
 	'*'  reduce 73
@@ -1454,6 +1455,7 @@ state 111
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -1477,14 +1479,14 @@ state 111
 
 
 state 112
-	ConstantList : Constant .  (90)
+	ConstantList : Constant .  (91)
 
-	.  reduce 90
+	.  reduce 91
 
 
 state 113
-	ArrayConstant : '[' ConstantList . ']'  (87)
-	ConstantList : ConstantList . ',' Constant  (88)
+	ArrayConstant : '[' ConstantList . ']'  (88)
+	ConstantList : ConstantList . ',' Constant  (89)
 
 	','  shift 153
 	']'  shift 154
@@ -1902,6 +1904,7 @@ state 131
 state 132
 	LValue : Expr '[' . Expr ']'  (52)
 	Expr : Expr '[' . Expr ':' Expr ']'  (83)
+	Expr : Expr '[' . Expr ']' DEFAULT Expr  (84)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -2019,7 +2022,8 @@ state 138
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
-	WhileStmt : WHILE '(' Expr . ')' Stmt  (95)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
+	WhileStmt : WHILE '(' Expr . ')' Stmt  (96)
 
 	AND  shift 116
 	OR  shift 117
@@ -2043,7 +2047,7 @@ state 138
 
 
 state 139
-	ForStmt : FOR '(' SimpleStmt . ';' Expr ';' SimpleStmt ')' Stmt  (96)
+	ForStmt : FOR '(' SimpleStmt . ';' Expr ';' SimpleStmt ')' Stmt  (97)
 
 	';'  shift 174
 	.  error
@@ -2068,7 +2072,8 @@ state 140
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
-	IfStmt : IF '(' Expr . ')' Stmt ElseClause  (98)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
+	IfStmt : IF '(' Expr . ')' Stmt ElseClause  (99)
 
 	AND  shift 116
 	OR  shift 117
@@ -2180,7 +2185,8 @@ state 145
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
-	ExprList : Expr .  (94)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
+	ExprList : Expr .  (95)
 
 	AND  shift 116
 	OR  shift 117
@@ -2199,13 +2205,13 @@ state 145
 	'<'  shift 130
 	'.'  shift 131
 	'['  shift 132
-	','  reduce 94
-	')'  reduce 94
+	','  reduce 95
+	')'  reduce 95
 
 
 state 146
-	ExprList : ExprList . ',' Expr  (93)
-	PrintStmt : PRINT '(' ExprList . ')'  (103)
+	ExprList : ExprList . ',' Expr  (94)
+	PrintStmt : PRINT '(' ExprList . ')'  (104)
 
 	','  shift 181
 	')'  shift 182
@@ -2244,6 +2250,7 @@ state 149
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -2287,7 +2294,7 @@ state 152
 
 
 state 153
-	ConstantList : ConstantList ',' . Constant  (88)
+	ConstantList : ConstantList ',' . Constant  (89)
 
 	NULL  shift 57
 	LITERAL  shift 68
@@ -2299,13 +2306,11 @@ state 153
 
 
 state 154
-	ArrayConstant : '[' ConstantList ']' .  (87)
+	ArrayConstant : '[' ConstantList ']' .  (88)
 
-	.  reduce 87
+	.  reduce 88
 
 
-155: shift/reduce conflict (shift 122, reduce 69) on NEWSAMEARRAY
-155: shift/reduce conflict (shift 123, reduce 69) on JOINTARRAY
 state 155
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2326,6 +2331,7 @@ state 155
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	LESS_EQUAL  shift 118
 	GREATER_EQUAL  shift 119
@@ -2351,8 +2357,6 @@ state 155
 	':'  reduce 69
 
 
-156: shift/reduce conflict (shift 122, reduce 70) on NEWSAMEARRAY
-156: shift/reduce conflict (shift 123, reduce 70) on JOINTARRAY
 state 156
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2373,6 +2377,7 @@ state 156
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	LESS_EQUAL  shift 118
@@ -2398,8 +2403,6 @@ state 156
 	':'  reduce 70
 
 
-157: shift/reduce conflict (shift 122, reduce 67) on NEWSAMEARRAY
-157: shift/reduce conflict (shift 123, reduce 67) on JOINTARRAY
 state 157
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2420,6 +2423,7 @@ state 157
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	NEWSAMEARRAY  shift 122
 	JOINTARRAY  shift 123
@@ -2441,8 +2445,6 @@ state 157
 	':'  reduce 67
 
 
-158: shift/reduce conflict (shift 122, reduce 68) on NEWSAMEARRAY
-158: shift/reduce conflict (shift 123, reduce 68) on JOINTARRAY
 state 158
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2463,6 +2465,7 @@ state 158
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	NEWSAMEARRAY  shift 122
 	JOINTARRAY  shift 123
@@ -2484,8 +2487,6 @@ state 158
 	':'  reduce 68
 
 
-159: shift/reduce conflict (shift 122, reduce 63) on NEWSAMEARRAY
-159: shift/reduce conflict (shift 123, reduce 63) on JOINTARRAY
 state 159
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2506,6 +2507,7 @@ state 159
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	LESS_EQUAL  shift 118
 	GREATER_EQUAL  shift 119
@@ -2529,8 +2531,6 @@ state 159
 	':'  reduce 63
 
 
-160: shift/reduce conflict (shift 122, reduce 64) on NEWSAMEARRAY
-160: shift/reduce conflict (shift 123, reduce 64) on JOINTARRAY
 state 160
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2551,6 +2551,7 @@ state 160
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	LESS_EQUAL  shift 118
 	GREATER_EQUAL  shift 119
@@ -2574,23 +2575,6 @@ state 160
 	':'  reduce 64
 
 
-161: shift/reduce conflict (shift 116, reduce 81) on AND
-161: shift/reduce conflict (shift 117, reduce 81) on OR
-161: shift/reduce conflict (shift 118, reduce 81) on LESS_EQUAL
-161: shift/reduce conflict (shift 119, reduce 81) on GREATER_EQUAL
-161: shift/reduce conflict (shift 120, reduce 81) on EQUAL
-161: shift/reduce conflict (shift 121, reduce 81) on NOT_EQUAL
-161: shift/reduce conflict (shift 122, reduce 81) on NEWSAMEARRAY
-161: shift/reduce conflict (shift 123, reduce 81) on JOINTARRAY
-161: shift/reduce conflict (shift 124, reduce 81) on '+'
-161: shift/reduce conflict (shift 125, reduce 81) on '-'
-161: shift/reduce conflict (shift 126, reduce 81) on '*'
-161: shift/reduce conflict (shift 127, reduce 81) on '/'
-161: shift/reduce conflict (shift 128, reduce 81) on '%'
-161: shift/reduce conflict (shift 129, reduce 81) on '>'
-161: shift/reduce conflict (shift 130, reduce 81) on '<'
-161: shift/reduce conflict (shift 131, reduce 81) on '.'
-161: shift/reduce conflict (shift 132, reduce 81) on '['
 state 161
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2611,24 +2595,25 @@ state 161
 	Expr : Expr NEWSAMEARRAY Expr .  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	AND  shift 116
-	OR  shift 117
-	LESS_EQUAL  shift 118
-	GREATER_EQUAL  shift 119
-	EQUAL  shift 120
-	NOT_EQUAL  shift 121
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
 	'+'  shift 124
 	'-'  shift 125
 	'*'  shift 126
 	'/'  shift 127
 	'%'  shift 128
-	'>'  shift 129
-	'<'  shift 130
 	'.'  shift 131
 	'['  shift 132
+	AND  reduce 81
+	OR  reduce 81
+	LESS_EQUAL  reduce 81
+	GREATER_EQUAL  reduce 81
+	EQUAL  reduce 81
+	NOT_EQUAL  reduce 81
+	NEWSAMEARRAY  reduce 81
+	JOINTARRAY  reduce 81
+	'>'  reduce 81
+	'<'  reduce 81
 	','  reduce 81
 	';'  reduce 81
 	')'  reduce 81
@@ -2636,23 +2621,6 @@ state 161
 	':'  reduce 81
 
 
-162: shift/reduce conflict (shift 116, reduce 82) on AND
-162: shift/reduce conflict (shift 117, reduce 82) on OR
-162: shift/reduce conflict (shift 118, reduce 82) on LESS_EQUAL
-162: shift/reduce conflict (shift 119, reduce 82) on GREATER_EQUAL
-162: shift/reduce conflict (shift 120, reduce 82) on EQUAL
-162: shift/reduce conflict (shift 121, reduce 82) on NOT_EQUAL
-162: shift/reduce conflict (shift 122, reduce 82) on NEWSAMEARRAY
-162: shift/reduce conflict (shift 123, reduce 82) on JOINTARRAY
-162: shift/reduce conflict (shift 124, reduce 82) on '+'
-162: shift/reduce conflict (shift 125, reduce 82) on '-'
-162: shift/reduce conflict (shift 126, reduce 82) on '*'
-162: shift/reduce conflict (shift 127, reduce 82) on '/'
-162: shift/reduce conflict (shift 128, reduce 82) on '%'
-162: shift/reduce conflict (shift 129, reduce 82) on '>'
-162: shift/reduce conflict (shift 130, reduce 82) on '<'
-162: shift/reduce conflict (shift 131, reduce 82) on '.'
-162: shift/reduce conflict (shift 132, reduce 82) on '['
 state 162
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2673,13 +2641,8 @@ state 162
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr JOINTARRAY Expr .  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	AND  shift 116
-	OR  shift 117
-	LESS_EQUAL  shift 118
-	GREATER_EQUAL  shift 119
-	EQUAL  shift 120
-	NOT_EQUAL  shift 121
 	NEWSAMEARRAY  shift 122
 	JOINTARRAY  shift 123
 	'+'  shift 124
@@ -2687,10 +2650,16 @@ state 162
 	'*'  shift 126
 	'/'  shift 127
 	'%'  shift 128
-	'>'  shift 129
-	'<'  shift 130
 	'.'  shift 131
 	'['  shift 132
+	AND  reduce 82
+	OR  reduce 82
+	LESS_EQUAL  reduce 82
+	GREATER_EQUAL  reduce 82
+	EQUAL  reduce 82
+	NOT_EQUAL  reduce 82
+	'>'  reduce 82
+	'<'  reduce 82
 	','  reduce 82
 	';'  reduce 82
 	')'  reduce 82
@@ -2698,8 +2667,6 @@ state 162
 	':'  reduce 82
 
 
-163: shift/reduce conflict (shift 122, reduce 58) on NEWSAMEARRAY
-163: shift/reduce conflict (shift 123, reduce 58) on JOINTARRAY
 state 163
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2720,9 +2687,8 @@ state 163
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
 	'*'  shift 126
 	'/'  shift 127
 	'%'  shift 128
@@ -2734,6 +2700,8 @@ state 163
 	GREATER_EQUAL  reduce 58
 	EQUAL  reduce 58
 	NOT_EQUAL  reduce 58
+	NEWSAMEARRAY  reduce 58
+	JOINTARRAY  reduce 58
 	'+'  reduce 58
 	'-'  reduce 58
 	'>'  reduce 58
@@ -2745,8 +2713,6 @@ state 163
 	':'  reduce 58
 
 
-164: shift/reduce conflict (shift 122, reduce 59) on NEWSAMEARRAY
-164: shift/reduce conflict (shift 123, reduce 59) on JOINTARRAY
 state 164
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2767,9 +2733,8 @@ state 164
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
 	'*'  shift 126
 	'/'  shift 127
 	'%'  shift 128
@@ -2781,6 +2746,8 @@ state 164
 	GREATER_EQUAL  reduce 59
 	EQUAL  reduce 59
 	NOT_EQUAL  reduce 59
+	NEWSAMEARRAY  reduce 59
+	JOINTARRAY  reduce 59
 	'+'  reduce 59
 	'-'  reduce 59
 	'>'  reduce 59
@@ -2792,8 +2759,6 @@ state 164
 	':'  reduce 59
 
 
-165: shift/reduce conflict (shift 122, reduce 60) on NEWSAMEARRAY
-165: shift/reduce conflict (shift 123, reduce 60) on JOINTARRAY
 state 165
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2814,9 +2779,8 @@ state 165
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
 	'.'  shift 131
 	'['  shift 132
 	AND  reduce 60
@@ -2825,6 +2789,8 @@ state 165
 	GREATER_EQUAL  reduce 60
 	EQUAL  reduce 60
 	NOT_EQUAL  reduce 60
+	NEWSAMEARRAY  reduce 60
+	JOINTARRAY  reduce 60
 	'+'  reduce 60
 	'-'  reduce 60
 	'*'  reduce 60
@@ -2839,8 +2805,6 @@ state 165
 	':'  reduce 60
 
 
-166: shift/reduce conflict (shift 122, reduce 61) on NEWSAMEARRAY
-166: shift/reduce conflict (shift 123, reduce 61) on JOINTARRAY
 state 166
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2861,9 +2825,8 @@ state 166
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
 	'.'  shift 131
 	'['  shift 132
 	AND  reduce 61
@@ -2872,6 +2835,8 @@ state 166
 	GREATER_EQUAL  reduce 61
 	EQUAL  reduce 61
 	NOT_EQUAL  reduce 61
+	NEWSAMEARRAY  reduce 61
+	JOINTARRAY  reduce 61
 	'+'  reduce 61
 	'-'  reduce 61
 	'*'  reduce 61
@@ -2886,8 +2851,6 @@ state 166
 	':'  reduce 61
 
 
-167: shift/reduce conflict (shift 122, reduce 62) on NEWSAMEARRAY
-167: shift/reduce conflict (shift 123, reduce 62) on JOINTARRAY
 state 167
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2908,9 +2871,8 @@ state 167
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
 	'.'  shift 131
 	'['  shift 132
 	AND  reduce 62
@@ -2919,6 +2881,8 @@ state 167
 	GREATER_EQUAL  reduce 62
 	EQUAL  reduce 62
 	NOT_EQUAL  reduce 62
+	NEWSAMEARRAY  reduce 62
+	JOINTARRAY  reduce 62
 	'+'  reduce 62
 	'-'  reduce 62
 	'*'  reduce 62
@@ -2933,8 +2897,6 @@ state 167
 	':'  reduce 62
 
 
-168: shift/reduce conflict (shift 122, reduce 66) on NEWSAMEARRAY
-168: shift/reduce conflict (shift 123, reduce 66) on JOINTARRAY
 state 168
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2955,6 +2917,7 @@ state 168
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	NEWSAMEARRAY  shift 122
 	JOINTARRAY  shift 123
@@ -2976,8 +2939,6 @@ state 168
 	':'  reduce 66
 
 
-169: shift/reduce conflict (shift 122, reduce 65) on NEWSAMEARRAY
-169: shift/reduce conflict (shift 123, reduce 65) on JOINTARRAY
 state 169
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -2998,6 +2959,7 @@ state 169
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	NEWSAMEARRAY  shift 122
 	JOINTARRAY  shift 123
@@ -3040,6 +3002,8 @@ state 170
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
 	Expr : Expr '[' Expr . ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
+	Expr : Expr '[' Expr . ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -3083,6 +3047,7 @@ state 171
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -3108,7 +3073,7 @@ state 171
 state 172
 	Call : Receiver IDENTIFIER '(' . Actuals ')'  (54)
 	Receiver : .  (50)
-	Actuals : .  (92)
+	Actuals : .  (93)
 
 	NULL  shift 57
 	THIS  shift 58
@@ -3123,7 +3088,7 @@ state 172
 	'['  shift 74
 	VAR  shift 76
 	IDENTIFIER  reduce 50
-	')'  reduce 92
+	')'  reduce 93
 
 	Expr  goto 145
 	LValue  goto 99
@@ -3136,7 +3101,7 @@ state 172
 
 
 state 173
-	WhileStmt : WHILE '(' Expr ')' . Stmt  (95)
+	WhileStmt : WHILE '(' Expr ')' . Stmt  (96)
 	SimpleStmt : .  (42)
 	Receiver : .  (50)
 
@@ -3190,7 +3155,7 @@ state 173
 
 
 state 174
-	ForStmt : FOR '(' SimpleStmt ';' . Expr ';' SimpleStmt ')' Stmt  (96)
+	ForStmt : FOR '(' SimpleStmt ';' . Expr ';' SimpleStmt ')' Stmt  (97)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -3216,7 +3181,7 @@ state 174
 
 
 state 175
-	IfStmt : IF '(' Expr ')' . Stmt ElseClause  (98)
+	IfStmt : IF '(' Expr ')' . Stmt ElseClause  (99)
 	SimpleStmt : .  (42)
 	Receiver : .  (50)
 
@@ -3290,6 +3255,7 @@ state 176
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -3351,6 +3317,7 @@ state 180
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -3374,7 +3341,7 @@ state 180
 
 
 state 181
-	ExprList : ExprList ',' . Expr  (93)
+	ExprList : ExprList ',' . Expr  (94)
 	Receiver : .  (50)
 
 	NULL  shift 57
@@ -3400,9 +3367,9 @@ state 181
 
 
 state 182
-	PrintStmt : PRINT '(' ExprList ')' .  (103)
+	PrintStmt : PRINT '(' ExprList ')' .  (104)
 
-	.  reduce 103
+	.  reduce 104
 
 
 state 183
@@ -3465,15 +3432,39 @@ state 185
 
 
 state 186
-	ConstantList : ConstantList ',' Constant .  (88)
+	ConstantList : ConstantList ',' Constant .  (89)
 
-	.  reduce 88
+	.  reduce 89
 
 
 state 187
 	LValue : Expr '[' Expr ']' .  (52)
+	Expr : Expr '[' Expr ']' . DEFAULT Expr  (84)
 
-	.  reduce 52
+	DEFAULT  shift 201
+	AND  reduce 52
+	OR  reduce 52
+	LESS_EQUAL  reduce 52
+	GREATER_EQUAL  reduce 52
+	EQUAL  reduce 52
+	NOT_EQUAL  reduce 52
+	NEWSAMEARRAY  reduce 52
+	JOINTARRAY  reduce 52
+	'+'  reduce 52
+	'-'  reduce 52
+	'*'  reduce 52
+	'/'  reduce 52
+	'%'  reduce 52
+	'='  reduce 52
+	'>'  reduce 52
+	'<'  reduce 52
+	'.'  reduce 52
+	','  reduce 52
+	';'  reduce 52
+	')'  reduce 52
+	'['  reduce 52
+	']'  reduce 52
+	':'  reduce 52
 
 
 state 188
@@ -3494,7 +3485,7 @@ state 188
 	VAR  shift 76
 	IDENTIFIER  reduce 50
 
-	Expr  goto 201
+	Expr  goto 202
 	LValue  goto 99
 	Call  goto 100
 	Receiver  goto 91
@@ -3505,22 +3496,22 @@ state 188
 state 189
 	Call : Receiver IDENTIFIER '(' Actuals . ')'  (54)
 
-	')'  shift 202
+	')'  shift 203
 	.  error
 
 
 state 190
-	Actuals : ExprList .  (91)
-	ExprList : ExprList . ',' Expr  (93)
+	Actuals : ExprList .  (92)
+	ExprList : ExprList . ',' Expr  (94)
 
 	','  shift 181
-	')'  reduce 91
+	')'  reduce 92
 
 
 state 191
-	WhileStmt : WHILE '(' Expr ')' Stmt .  (95)
+	WhileStmt : WHILE '(' Expr ')' Stmt .  (96)
 
-	.  reduce 95
+	.  reduce 96
 
 
 state 192
@@ -3542,7 +3533,8 @@ state 192
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
-	ForStmt : FOR '(' SimpleStmt ';' Expr . ';' SimpleStmt ')' Stmt  (96)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
+	ForStmt : FOR '(' SimpleStmt ';' Expr . ';' SimpleStmt ')' Stmt  (97)
 
 	AND  shift 116
 	OR  shift 117
@@ -3560,47 +3552,47 @@ state 192
 	'>'  shift 129
 	'<'  shift 130
 	'.'  shift 131
-	';'  shift 203
+	';'  shift 204
 	'['  shift 132
 	.  error
 
 
 state 193
-	IfStmt : IF '(' Expr ')' Stmt . ElseClause  (98)
-	ElseClause : .  (100)
+	IfStmt : IF '(' Expr ')' Stmt . ElseClause  (99)
+	ElseClause : .  (101)
 
-	ELSE  shift 204
-	VOID  reduce 100
-	BOOL  reduce 100
-	INT  reduce 100
-	STRING  reduce 100
-	CLASS  reduce 100
-	NULL  reduce 100
-	THIS  reduce 100
-	WHILE  reduce 100
-	FOR  reduce 100
-	IF  reduce 100
-	RETURN  reduce 100
-	BREAK  reduce 100
-	NEW  reduce 100
-	PRINT  reduce 100
-	READ_INTEGER  reduce 100
-	READ_LINE  reduce 100
-	LITERAL  reduce 100
-	IDENTIFIER  reduce 100
-	INSTANCEOF  reduce 100
-	SCOPY  reduce 100
-	GUARDED  reduce 100
-	'-'  reduce 100
-	';'  reduce 100
-	'!'  reduce 100
-	'('  reduce 100
-	'['  reduce 100
-	'{'  reduce 100
-	'}'  reduce 100
-	VAR  reduce 100
+	ELSE  shift 205
+	VOID  reduce 101
+	BOOL  reduce 101
+	INT  reduce 101
+	STRING  reduce 101
+	CLASS  reduce 101
+	NULL  reduce 101
+	THIS  reduce 101
+	WHILE  reduce 101
+	FOR  reduce 101
+	IF  reduce 101
+	RETURN  reduce 101
+	BREAK  reduce 101
+	NEW  reduce 101
+	PRINT  reduce 101
+	READ_INTEGER  reduce 101
+	READ_LINE  reduce 101
+	LITERAL  reduce 101
+	IDENTIFIER  reduce 101
+	INSTANCEOF  reduce 101
+	SCOPY  reduce 101
+	GUARDED  reduce 101
+	'-'  reduce 101
+	';'  reduce 101
+	'!'  reduce 101
+	'('  reduce 101
+	'['  reduce 101
+	'{'  reduce 101
+	'}'  reduce 101
+	VAR  reduce 101
 
-	ElseClause  goto 205
+	ElseClause  goto 206
 
 
 state 194
@@ -3641,7 +3633,7 @@ state 194
 	Variable  goto 27
 	Type  goto 44
 	StmtBlock  goto 78
-	Stmt  goto 206
+	Stmt  goto 207
 	SimpleStmt  goto 80
 	Expr  goto 81
 	IfStmt  goto 82
@@ -3689,7 +3681,8 @@ state 197
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
-	ExprList : ExprList ',' Expr .  (93)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
+	ExprList : ExprList ',' Expr .  (94)
 
 	AND  shift 116
 	OR  shift 117
@@ -3708,14 +3701,14 @@ state 197
 	'<'  shift 130
 	'.'  shift 131
 	'['  shift 132
-	','  reduce 93
-	')'  reduce 93
+	','  reduce 94
+	')'  reduce 94
 
 
 state 198
 	Expr : INSTANCEOF '(' Expr ',' IDENTIFIER . ')'  (79)
 
-	')'  shift 207
+	')'  shift 208
 	.  error
 
 
@@ -3739,6 +3732,7 @@ state 199
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -3756,13 +3750,11 @@ state 199
 	'>'  shift 129
 	'<'  shift 130
 	'.'  shift 131
-	')'  shift 208
+	')'  shift 209
 	'['  shift 132
 	.  error
 
 
-200: shift/reduce conflict (shift 122, reduce 80) on NEWSAMEARRAY
-200: shift/reduce conflict (shift 123, reduce 80) on JOINTARRAY
 state 200
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
@@ -3783,32 +3775,38 @@ state 200
 	Expr : Expr . NEWSAMEARRAY Expr  (81)
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
-	NEWSAMEARRAY  shift 122
-	JOINTARRAY  shift 123
-	AND  reduce 80
-	OR  reduce 80
-	LESS_EQUAL  reduce 80
-	GREATER_EQUAL  reduce 80
-	EQUAL  reduce 80
-	NOT_EQUAL  reduce 80
-	'+'  reduce 80
-	'-'  reduce 80
-	'*'  reduce 80
-	'/'  reduce 80
-	'%'  reduce 80
-	'>'  reduce 80
-	'<'  reduce 80
-	'.'  reduce 80
-	','  reduce 80
-	';'  reduce 80
-	')'  reduce 80
-	'['  reduce 80
-	']'  reduce 80
-	':'  reduce 80
+	.  reduce 80
 
 
 state 201
+	Expr : Expr '[' Expr ']' DEFAULT . Expr  (84)
+	Receiver : .  (50)
+
+	NULL  shift 57
+	THIS  shift 58
+	NEW  shift 64
+	READ_INTEGER  shift 66
+	READ_LINE  shift 67
+	LITERAL  shift 68
+	INSTANCEOF  shift 69
+	'-'  shift 71
+	'!'  shift 72
+	'('  shift 73
+	'['  shift 74
+	VAR  shift 76
+	IDENTIFIER  reduce 50
+
+	Expr  goto 210
+	LValue  goto 99
+	Call  goto 100
+	Receiver  goto 91
+	Constant  goto 92
+	ArrayConstant  goto 93
+
+
+state 202
 	Receiver : Expr . '.'  (49)
 	LValue : Expr . '[' Expr ']'  (52)
 	Expr : Expr . '+' Expr  (58)
@@ -3828,6 +3826,7 @@ state 201
 	Expr : Expr . JOINTARRAY Expr  (82)
 	Expr : Expr . '[' Expr ':' Expr ']'  (83)
 	Expr : Expr '[' Expr ':' Expr . ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
 
 	AND  shift 116
 	OR  shift 117
@@ -3846,18 +3845,18 @@ state 201
 	'<'  shift 130
 	'.'  shift 131
 	'['  shift 132
-	']'  shift 209
+	']'  shift 211
 	.  error
 
 
-state 202
+state 203
 	Call : Receiver IDENTIFIER '(' Actuals ')' .  (54)
 
 	.  reduce 54
 
 
-state 203
-	ForStmt : FOR '(' SimpleStmt ';' Expr ';' . SimpleStmt ')' Stmt  (96)
+state 204
+	ForStmt : FOR '(' SimpleStmt ';' Expr ';' . SimpleStmt ')' Stmt  (97)
 	SimpleStmt : .  (42)
 	Receiver : .  (50)
 
@@ -3876,62 +3875,8 @@ state 203
 	IDENTIFIER  reduce 50
 	')'  reduce 42
 
-	SimpleStmt  goto 210
+	SimpleStmt  goto 212
 	Expr  goto 81
-	LValue  goto 89
-	Call  goto 90
-	Receiver  goto 91
-	Constant  goto 92
-	ArrayConstant  goto 93
-
-
-state 204
-	ElseClause : ELSE . Stmt  (99)
-	SimpleStmt : .  (42)
-	Receiver : .  (50)
-
-	VOID  shift 19
-	BOOL  shift 20
-	INT  shift 21
-	STRING  shift 22
-	CLASS  shift 23
-	NULL  shift 57
-	THIS  shift 58
-	WHILE  shift 59
-	FOR  shift 60
-	IF  shift 61
-	RETURN  shift 62
-	BREAK  shift 63
-	NEW  shift 64
-	PRINT  shift 65
-	READ_INTEGER  shift 66
-	READ_LINE  shift 67
-	LITERAL  shift 68
-	INSTANCEOF  shift 69
-	SCOPY  shift 70
-	'-'  shift 71
-	'!'  shift 72
-	'('  shift 73
-	'['  shift 74
-	'{'  shift 52
-	VAR  shift 76
-	IDENTIFIER  reduce 50
-	';'  reduce 42
-
-	VariableDef  goto 77
-	Variable  goto 27
-	Type  goto 44
-	StmtBlock  goto 78
-	Stmt  goto 211
-	SimpleStmt  goto 80
-	Expr  goto 81
-	IfStmt  goto 82
-	WhileStmt  goto 83
-	ForStmt  goto 84
-	ReturnStmt  goto 85
-	PrintStmt  goto 86
-	BreakStmt  goto 87
-	GuardedStmt  goto 88
 	LValue  goto 89
 	Call  goto 90
 	Receiver  goto 91
@@ -3940,58 +3885,7 @@ state 204
 
 
 state 205
-	IfStmt : IF '(' Expr ')' Stmt ElseClause .  (98)
-
-	.  reduce 98
-
-
-state 206
-	IfSubStmt : Expr ':' Stmt .  (45)
-	IfBranch : Expr ':' Stmt . GUARDED  (46)
-
-	GUARDED  shift 212
-	'}'  reduce 45
-
-
-state 207
-	Expr : INSTANCEOF '(' Expr ',' IDENTIFIER ')' .  (79)
-
-	.  reduce 79
-
-
-state 208
-	Stmt : SCOPY '(' IDENTIFIER ',' Expr ')' .  (31)
-
-	.  reduce 31
-
-
-state 209
-	Expr : Expr '[' Expr ':' Expr ']' .  (83)
-
-	.  reduce 83
-
-
-state 210
-	ForStmt : FOR '(' SimpleStmt ';' Expr ';' SimpleStmt . ')' Stmt  (96)
-
-	')'  shift 213
-	.  error
-
-
-state 211
-	ElseClause : ELSE Stmt .  (99)
-
-	.  reduce 99
-
-
-state 212
-	IfBranch : Expr ':' Stmt GUARDED .  (46)
-
-	.  reduce 46
-
-
-state 213
-	ForStmt : FOR '(' SimpleStmt ';' Expr ';' SimpleStmt ')' . Stmt  (96)
+	ElseClause : ELSE . Stmt  (100)
 	SimpleStmt : .  (42)
 	Receiver : .  (50)
 
@@ -4027,7 +3921,7 @@ state 213
 	Variable  goto 27
 	Type  goto 44
 	StmtBlock  goto 78
-	Stmt  goto 214
+	Stmt  goto 213
 	SimpleStmt  goto 80
 	Expr  goto 81
 	IfStmt  goto 82
@@ -4044,31 +3938,141 @@ state 213
 	ArrayConstant  goto 93
 
 
+state 206
+	IfStmt : IF '(' Expr ')' Stmt ElseClause .  (99)
+
+	.  reduce 99
+
+
+state 207
+	IfSubStmt : Expr ':' Stmt .  (45)
+	IfBranch : Expr ':' Stmt . GUARDED  (46)
+
+	GUARDED  shift 214
+	'}'  reduce 45
+
+
+state 208
+	Expr : INSTANCEOF '(' Expr ',' IDENTIFIER ')' .  (79)
+
+	.  reduce 79
+
+
+state 209
+	Stmt : SCOPY '(' IDENTIFIER ',' Expr ')' .  (31)
+
+	.  reduce 31
+
+
+state 210
+	Receiver : Expr . '.'  (49)
+	LValue : Expr . '[' Expr ']'  (52)
+	Expr : Expr . '+' Expr  (58)
+	Expr : Expr . '-' Expr  (59)
+	Expr : Expr . '*' Expr  (60)
+	Expr : Expr . '/' Expr  (61)
+	Expr : Expr . '%' Expr  (62)
+	Expr : Expr . EQUAL Expr  (63)
+	Expr : Expr . NOT_EQUAL Expr  (64)
+	Expr : Expr . '<' Expr  (65)
+	Expr : Expr . '>' Expr  (66)
+	Expr : Expr . LESS_EQUAL Expr  (67)
+	Expr : Expr . GREATER_EQUAL Expr  (68)
+	Expr : Expr . AND Expr  (69)
+	Expr : Expr . OR Expr  (70)
+	Expr : Expr . NEWSAMEARRAY Expr  (81)
+	Expr : Expr . JOINTARRAY Expr  (82)
+	Expr : Expr . '[' Expr ':' Expr ']'  (83)
+	Expr : Expr . '[' Expr ']' DEFAULT Expr  (84)
+	Expr : Expr '[' Expr ']' DEFAULT Expr .  (84)
+
+	.  reduce 84
+
+
+state 211
+	Expr : Expr '[' Expr ':' Expr ']' .  (83)
+
+	.  reduce 83
+
+
+state 212
+	ForStmt : FOR '(' SimpleStmt ';' Expr ';' SimpleStmt . ')' Stmt  (97)
+
+	')'  shift 215
+	.  error
+
+
+state 213
+	ElseClause : ELSE Stmt .  (100)
+
+	.  reduce 100
+
+
 state 214
-	ForStmt : FOR '(' SimpleStmt ';' Expr ';' SimpleStmt ')' Stmt .  (96)
+	IfBranch : Expr ':' Stmt GUARDED .  (46)
 
-	.  reduce 96
-
-
-State 108 contains 2 shift/reduce conflicts.
-State 109 contains 2 shift/reduce conflicts.
-State 155 contains 2 shift/reduce conflicts.
-State 156 contains 2 shift/reduce conflicts.
-State 157 contains 2 shift/reduce conflicts.
-State 158 contains 2 shift/reduce conflicts.
-State 159 contains 2 shift/reduce conflicts.
-State 160 contains 2 shift/reduce conflicts.
-State 161 contains 17 shift/reduce conflicts.
-State 162 contains 17 shift/reduce conflicts.
-State 163 contains 2 shift/reduce conflicts.
-State 164 contains 2 shift/reduce conflicts.
-State 165 contains 2 shift/reduce conflicts.
-State 166 contains 2 shift/reduce conflicts.
-State 167 contains 2 shift/reduce conflicts.
-State 168 contains 2 shift/reduce conflicts.
-State 169 contains 2 shift/reduce conflicts.
-State 200 contains 2 shift/reduce conflicts.
+	.  reduce 46
 
 
-59 terminals, 36 nonterminals
-104 grammar rules, 215 states
+state 215
+	ForStmt : FOR '(' SimpleStmt ';' Expr ';' SimpleStmt ')' . Stmt  (97)
+	SimpleStmt : .  (42)
+	Receiver : .  (50)
+
+	VOID  shift 19
+	BOOL  shift 20
+	INT  shift 21
+	STRING  shift 22
+	CLASS  shift 23
+	NULL  shift 57
+	THIS  shift 58
+	WHILE  shift 59
+	FOR  shift 60
+	IF  shift 61
+	RETURN  shift 62
+	BREAK  shift 63
+	NEW  shift 64
+	PRINT  shift 65
+	READ_INTEGER  shift 66
+	READ_LINE  shift 67
+	LITERAL  shift 68
+	INSTANCEOF  shift 69
+	SCOPY  shift 70
+	'-'  shift 71
+	'!'  shift 72
+	'('  shift 73
+	'['  shift 74
+	'{'  shift 52
+	VAR  shift 76
+	IDENTIFIER  reduce 50
+	';'  reduce 42
+
+	VariableDef  goto 77
+	Variable  goto 27
+	Type  goto 44
+	StmtBlock  goto 78
+	Stmt  goto 216
+	SimpleStmt  goto 80
+	Expr  goto 81
+	IfStmt  goto 82
+	WhileStmt  goto 83
+	ForStmt  goto 84
+	ReturnStmt  goto 85
+	PrintStmt  goto 86
+	BreakStmt  goto 87
+	GuardedStmt  goto 88
+	LValue  goto 89
+	Call  goto 90
+	Receiver  goto 91
+	Constant  goto 92
+	ArrayConstant  goto 93
+
+
+state 216
+	ForStmt : FOR '(' SimpleStmt ';' Expr ';' SimpleStmt ')' Stmt .  (97)
+
+	.  reduce 97
+
+
+60 terminals, 36 nonterminals
+105 grammar rules, 217 states

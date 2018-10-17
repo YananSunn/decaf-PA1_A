@@ -65,6 +65,7 @@ WHITESPACE			= ([ \t]+)
 "scopy"				{ return keyword(Parser.SCOPY);			}
 "sealed"			{ return keyword(Parser.SEALED);		}
 "var"				{ return keyword(Parser.VAR);			}
+"default"			{ return keyword(Parser.DEFAULT);		}
 
 "while"				{ return keyword(Parser.WHILE);			}
 "for"				{ return keyword(Parser.FOR);			}

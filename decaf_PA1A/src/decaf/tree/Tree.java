@@ -288,8 +288,9 @@ public abstract class Tree {
     public static final int NEWSAMEARRAY = ARRAYCONSTANT + 1;
     public static final int JOINTARRAY = NEWSAMEARRAY + 1;
     public static final int ACCESSARRAY = JOINTARRAY + 1;
+    public static final int DEFAULTARRAY = ACCESSARRAY + 1;
     
-    public static final int READLINEEXPR = ACCESSARRAY + 1;
+    public static final int READLINEEXPR = DEFAULTARRAY + 1;
 
     public static final int PRINT = READLINEEXPR + 1;
     
@@ -1270,6 +1271,39 @@ public abstract class Tree {
     		expr2.printTo(pw);
     		expr3.printTo(pw);
     		pw.decIndent();
+    		pw.decIndent();
+    	}
+    }
+    
+    public static class DefaultArray extends Expr {
+
+    	public Expr expr1;
+    	public Expr expr2;
+	    public Expr expr3;
+
+        public DefaultArray(Expr expr1, Expr expr2, Expr expr3, Location loc) {
+            super(DEFAULTARRAY, loc);
+    		this.expr1 = expr1;
+			this.expr2 = expr2;
+			this.expr3 = expr3;
+       }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitDefaultArray(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("arrref");
+    		pw.incIndent();
+    		expr1.printTo(pw);
+    		expr2.printTo(pw);
+    		pw.println("default");
+    		pw.incIndent();
+    		expr3.printTo(pw);
+    		pw.decIndent();
+    		pw.decIndent();
     	}
     }
     
@@ -1684,6 +1718,10 @@ public abstract class Tree {
         }
         
         public void visitAccessArray(AccessArray that){
+            visitTree(that);
+        }
+        
+        public void visitDefaultArray(DefaultArray that){
             visitTree(that);
         }
         
