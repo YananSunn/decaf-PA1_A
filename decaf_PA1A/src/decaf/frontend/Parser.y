@@ -32,9 +32,9 @@ import java.util.*;
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
 
-%token SCOPY SEALED GUARDED NEWSAMEARRAY 
+%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY
 
-%token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.' '%%'
+%token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.' '%%' '++'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
 
 %left OR
@@ -44,6 +44,7 @@ import java.util.*;
 %left  '+' '-'
 
 %left  '%%'
+%right '++'
 %left  '*' '/' '%' ',' 
 
 %nonassoc UMINUS '!' 
@@ -398,6 +399,10 @@ Expr            :	LValue
 				|	Expr NEWSAMEARRAY Expr
                 	{
                 		$$.expr = new Tree.NewSameArray($1.expr, $3.expr, $2.loc);
+                	}
+                |	Expr JOINTARRAY Expr
+                	{
+                		$$.expr = new Tree.JointArray($1.expr, $3.expr, $2.loc);
                 	}
                 ;
 	

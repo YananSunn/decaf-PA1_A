@@ -286,8 +286,9 @@ public abstract class Tree {
     public static final int VARSTMT = IFSUBSTMT + 1;
     public static final int ARRAYCONSTANT = VARSTMT + 1;
     public static final int NEWSAMEARRAY = ARRAYCONSTANT + 1;
+    public static final int JOINTARRAY = NEWSAMEARRAY + 1;
     
-    public static final int READLINEEXPR = NEWSAMEARRAY + 1;
+    public static final int READLINEEXPR = JOINTARRAY + 1;
 
     public static final int PRINT = READLINEEXPR + 1;
     
@@ -1214,6 +1215,32 @@ public abstract class Tree {
     	}
     }
     
+    public static class JointArray extends Expr {
+
+    	public Expr jointarray;
+    	public Expr expr;
+
+        public JointArray(Expr expr, Expr jointarray, Location loc) {
+            super(JOINTARRAY, loc);
+    		this.expr = expr;
+    		this.jointarray = jointarray;
+       }
+
+    	@Override
+        public void accept(Visitor v) {
+            v.visitJointArray(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.println("array concat");
+    		pw.incIndent();
+    		expr.printTo(pw);
+    		jointarray.printTo(pw);
+    		pw.decIndent();
+    	}
+    }
+    
 
     /**
       * instanceof expression
@@ -1617,6 +1644,10 @@ public abstract class Tree {
         }
         
         public void visitNewSameArray(NewSameArray that){
+            visitTree(that);
+        }
+        
+        public void visitJointArray(JointArray that){
             visitTree(that);
         }
         
