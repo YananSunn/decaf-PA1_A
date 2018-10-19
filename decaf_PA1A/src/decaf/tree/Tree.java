@@ -291,8 +291,9 @@ public abstract class Tree {
     public static final int DEFAULTARRAY = ACCESSARRAY + 1;
     public static final int COMPARRAY = DEFAULTARRAY + 1;
     public static final int FOREACHARRAY = COMPARRAY + 1;
+    public static final int VARBIND = FOREACHARRAY + 1;
     
-    public static final int READLINEEXPR = FOREACHARRAY + 1;
+    public static final int READLINEEXPR = VARBIND + 1;
 
     public static final int PRINT = READLINEEXPR + 1;
     
@@ -1346,18 +1347,46 @@ public abstract class Tree {
     	}
     }
     
+    public static class VarBind extends Tree{
+    	
+    	public TypeLiteral type;
+    	public String name;
+    	
+    	public VarBind(TypeLiteral type, String name, Location loc) {
+    		super(VARBIND, loc);
+    		this.type = type;
+    		this.name = name;
+    	}
+    	
+    	@Override
+        public void accept(Visitor v) {
+            v.visitVarBind(this);
+        }
+
+    	@Override
+    	public void printTo(IndentPrintWriter pw) {
+    		pw.print("varbind " + name + " ");
+    		if(type != null) {
+    			type.printTo(pw);
+    			pw.println();
+    		}
+    		else {
+    			pw.println("var");
+    		}
+    	}
+    }
     public static class ForeachVarArray extends Expr {
 
     	public Expr expr1;
     	public Expr expr2;
-	    public String name;
+	    public VarBind varbind;
 	    public Tree stmt;
 
-        public ForeachVarArray(String name, Expr expr1, Expr expr2, Tree stmt, Location loc) {
+        public ForeachVarArray(VarBind varbind, Expr expr1, Expr expr2, Tree stmt, Location loc) {
             super(FOREACHARRAY, loc);
-    		this.name = name;
+    		this.varbind = varbind;
     		this.expr1 = expr1;
-			this.expr2 = expr2;
+    		this.expr2 = expr2;
 			this.stmt = stmt;
        }
 
@@ -1370,7 +1399,7 @@ public abstract class Tree {
     	public void printTo(IndentPrintWriter pw) {
     		pw.println("foreach");
     		pw.incIndent();
-    		pw.println("varbind " + name + " var");
+    		varbind.printTo(pw);
     		expr1.printTo(pw);
     		if(expr2 != null) {
     			expr2.printTo(pw);
@@ -1851,6 +1880,10 @@ public abstract class Tree {
         }
         
         public void visitForeachIdentArray(ForeachIdentArray that){
+            visitTree(that);
+        }
+        
+        public void visitVarBind(VarBind that){
             visitTree(that);
         }
         

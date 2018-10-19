@@ -217,21 +217,23 @@ Stmt		    :	VariableDef
                 |	GuardedStmt
                 |	ForeachStmt
                 ;
-ForeachStmt		:	FOREACH '(' VAR IDENTIFIER IN Expr WHILE Expr ')' Stmt
+ForeachStmt		:	FOREACH '(' BoundVariable IN Expr WHILE Expr ')' Stmt
 					{
-						$$.stmt = new Tree.ForeachVarArray($4.ident, $6.expr, $8.expr, $10.stmt, $1.loc);
+						$$.stmt = new Tree.ForeachVarArray($3.varBind, $5.expr, $7.expr, $9.stmt, $1.loc);
 					}
-				|	FOREACH '(' VAR IDENTIFIER IN Expr ')' Stmt
+				|	FOREACH '(' BoundVariable IN Expr ')' Stmt
 					{
-						$$.stmt = new Tree.ForeachVarArray($4.ident, $6.expr, null, $8.stmt, $1.loc);
+						$$.stmt = new Tree.ForeachVarArray($3.varBind, $5.expr, null, $7.stmt, $1.loc);
 					}
-				|	FOREACH '(' Type IDENTIFIER IN Expr WHILE Expr ')' Stmt
+				;
+				
+BoundVariable	:	VAR IDENTIFIER
 					{
-						$$.stmt = new Tree.ForeachIdentArray($3.type, $4.ident, $6.expr, $8.expr, $10.stmt, $1.loc);
+						$$.varBind = new Tree.VarBind(null, $2.ident, $1.loc);
 					}
-				|	FOREACH '(' Type IDENTIFIER IN Expr ')' Stmt
+				|	Type IDENTIFIER
 					{
-						$$.stmt = new Tree.ForeachIdentArray($3.type, $4.ident, $6.expr, null, $8.stmt, $1.loc);
+						$$.varBind = new Tree.VarBind($1.type, $2.ident, $1.loc);
 					}
 				;
 SimpleStmt      :	LValue '=' Expr
@@ -429,15 +431,25 @@ Expr            :	LValue
                 	{
                 		$$.expr = new Tree.DefaultArray($1.expr, $3.expr, $6.expr, $5.loc);
                 	}
-                |	'[' Expr FOR IDENTIFIER IN Expr IF Expr ']'
+                |	'[' Expr FOR IDENTIFIER IN Expr BoolExpr ']'
                 	{
-                		$$.expr = new Tree.CompArray($2.expr, $4.ident, $6.expr, $8.expr, $1.loc);
+                		$$.expr = new Tree.CompArray($2.expr, $4.ident, $6.expr, $7.expr, $1.loc);
                 	}
                 |	'[' Expr FOR IDENTIFIER IN Expr ']'
                 	{
                 		$$.expr = new Tree.CompArray($2.expr, $4.ident, $6.expr, null, $1.loc);
                 	}
                 ;
+BoolExpr		: 	IF Expr
+					{
+						$$.expr = $2.expr;
+					}
+				|	/* empty */
+                    {
+                        $$ = new SemValue();
+                    }
+                ;
+
 	
 Constant        :	LITERAL
 					{
