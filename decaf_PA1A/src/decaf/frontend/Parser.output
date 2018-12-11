@@ -1439,11 +1439,11 @@ state 111
 	'%'  reduce 77
 	'>'  reduce 77
 	'<'  reduce 77
+	':'  reduce 77
 	','  reduce 77
 	';'  reduce 77
 	')'  reduce 77
 	']'  reduce 77
-	':'  reduce 77
 
 
 state 112
@@ -1488,11 +1488,11 @@ state 112
 	'%'  reduce 78
 	'>'  reduce 78
 	'<'  reduce 78
+	':'  reduce 78
 	','  reduce 78
 	';'  reduce 78
 	')'  reduce 78
 	']'  reduce 78
-	':'  reduce 78
 
 
 state 113
@@ -2129,12 +2129,12 @@ state 141
 	'>'  reduce 56
 	'<'  reduce 56
 	'.'  reduce 56
+	':'  reduce 56
 	','  reduce 56
 	';'  reduce 56
 	')'  reduce 56
 	'['  reduce 56
 	']'  reduce 56
-	':'  reduce 56
 
 
 state 142
@@ -2519,11 +2519,11 @@ state 163
 	IF  reduce 74
 	AND  reduce 74
 	OR  reduce 74
+	':'  reduce 74
 	','  reduce 74
 	';'  reduce 74
 	')'  reduce 74
 	']'  reduce 74
-	':'  reduce 74
 
 
 state 164
@@ -2568,11 +2568,11 @@ state 164
 	FOR  reduce 75
 	IF  reduce 75
 	OR  reduce 75
+	':'  reduce 75
 	','  reduce 75
 	';'  reduce 75
 	')'  reduce 75
 	']'  reduce 75
-	':'  reduce 75
 
 
 state 165
@@ -2613,11 +2613,11 @@ state 165
 	OR  reduce 72
 	EQUAL  reduce 72
 	NOT_EQUAL  reduce 72
+	':'  reduce 72
 	','  reduce 72
 	';'  reduce 72
 	')'  reduce 72
 	']'  reduce 72
-	':'  reduce 72
 
 
 state 166
@@ -2658,11 +2658,11 @@ state 166
 	OR  reduce 73
 	EQUAL  reduce 73
 	NOT_EQUAL  reduce 73
+	':'  reduce 73
 	','  reduce 73
 	';'  reduce 73
 	')'  reduce 73
 	']'  reduce 73
-	':'  reduce 73
 
 
 state 167
@@ -2705,11 +2705,11 @@ state 167
 	IF  reduce 68
 	AND  reduce 68
 	OR  reduce 68
+	':'  reduce 68
 	','  reduce 68
 	';'  reduce 68
 	')'  reduce 68
 	']'  reduce 68
-	':'  reduce 68
 
 
 state 168
@@ -2752,11 +2752,11 @@ state 168
 	IF  reduce 69
 	AND  reduce 69
 	OR  reduce 69
+	':'  reduce 69
 	','  reduce 69
 	';'  reduce 69
 	')'  reduce 69
 	']'  reduce 69
-	':'  reduce 69
 
 
 state 169
@@ -2801,11 +2801,11 @@ state 169
 	JOINTARRAY  reduce 86
 	'>'  reduce 86
 	'<'  reduce 86
+	':'  reduce 86
 	','  reduce 86
 	';'  reduce 86
 	')'  reduce 86
 	']'  reduce 86
-	':'  reduce 86
 
 
 state 170
@@ -2850,11 +2850,11 @@ state 170
 	NOT_EQUAL  reduce 87
 	'>'  reduce 87
 	'<'  reduce 87
+	':'  reduce 87
 	','  reduce 87
 	';'  reduce 87
 	')'  reduce 87
 	']'  reduce 87
-	':'  reduce 87
 
 
 state 171
@@ -2899,11 +2899,11 @@ state 171
 	'-'  reduce 63
 	'>'  reduce 63
 	'<'  reduce 63
+	':'  reduce 63
 	','  reduce 63
 	';'  reduce 63
 	')'  reduce 63
 	']'  reduce 63
-	':'  reduce 63
 
 
 state 172
@@ -2948,11 +2948,11 @@ state 172
 	'-'  reduce 64
 	'>'  reduce 64
 	'<'  reduce 64
+	':'  reduce 64
 	','  reduce 64
 	';'  reduce 64
 	')'  reduce 64
 	']'  reduce 64
-	':'  reduce 64
 
 
 state 173
@@ -2997,11 +2997,11 @@ state 173
 	'%'  reduce 65
 	'>'  reduce 65
 	'<'  reduce 65
+	':'  reduce 65
 	','  reduce 65
 	';'  reduce 65
 	')'  reduce 65
 	']'  reduce 65
-	':'  reduce 65
 
 
 state 174
@@ -3046,11 +3046,11 @@ state 174
 	'%'  reduce 66
 	'>'  reduce 66
 	'<'  reduce 66
+	':'  reduce 66
 	','  reduce 66
 	';'  reduce 66
 	')'  reduce 66
 	']'  reduce 66
-	':'  reduce 66
 
 
 state 175
@@ -3095,11 +3095,11 @@ state 175
 	'%'  reduce 67
 	'>'  reduce 67
 	'<'  reduce 67
+	':'  reduce 67
 	','  reduce 67
 	';'  reduce 67
 	')'  reduce 67
 	']'  reduce 67
-	':'  reduce 67
 
 
 state 176
@@ -3140,11 +3140,11 @@ state 176
 	OR  reduce 71
 	EQUAL  reduce 71
 	NOT_EQUAL  reduce 71
+	':'  reduce 71
 	','  reduce 71
 	';'  reduce 71
 	')'  reduce 71
 	']'  reduce 71
-	':'  reduce 71
 
 
 state 177
@@ -3185,11 +3185,11 @@ state 177
 	OR  reduce 70
 	EQUAL  reduce 70
 	NOT_EQUAL  reduce 70
+	':'  reduce 70
 	','  reduce 70
 	';'  reduce 70
 	')'  reduce 70
 	']'  reduce 70
-	':'  reduce 70
 
 
 state 178
@@ -3232,9 +3232,9 @@ state 178
 	'>'  shift 133
 	'<'  shift 134
 	'.'  shift 135
+	':'  shift 200
 	'['  shift 136
-	']'  shift 200
-	':'  shift 201
+	']'  shift 201
 	.  error
 
 
@@ -3488,8 +3488,8 @@ state 184
 	'>'  shift 133
 	'<'  shift 134
 	'.'  shift 135
-	'['  shift 136
 	':'  shift 207
+	'['  shift 136
 	.  error
 
 
@@ -3715,10 +3715,36 @@ state 199
 
 
 state 200
+	Expr : Expr '[' Expr ':' . Expr ']'  (88)
+	Receiver : .  (55)
+
+	NULL  shift 57
+	THIS  shift 58
+	NEW  shift 64
+	READ_INTEGER  shift 66
+	READ_LINE  shift 67
+	LITERAL  shift 68
+	INSTANCEOF  shift 69
+	'-'  shift 72
+	'!'  shift 73
+	'('  shift 74
+	'['  shift 75
+	VAR  shift 77
+	IDENTIFIER  reduce 55
+
+	Expr  goto 217
+	LValue  goto 101
+	Call  goto 102
+	Receiver  goto 93
+	Constant  goto 94
+	ArrayConstant  goto 95
+
+
+state 201
 	LValue : Expr '[' Expr ']' .  (57)
 	Expr : Expr '[' Expr ']' . DEFAULT Expr  (89)
 
-	DEFAULT  shift 217
+	DEFAULT  shift 218
 	WHILE  reduce 57
 	FOR  reduce 57
 	IF  reduce 57
@@ -3739,38 +3765,12 @@ state 200
 	'>'  reduce 57
 	'<'  reduce 57
 	'.'  reduce 57
+	':'  reduce 57
 	','  reduce 57
 	';'  reduce 57
 	')'  reduce 57
 	'['  reduce 57
 	']'  reduce 57
-	':'  reduce 57
-
-
-state 201
-	Expr : Expr '[' Expr ':' . Expr ']'  (88)
-	Receiver : .  (55)
-
-	NULL  shift 57
-	THIS  shift 58
-	NEW  shift 64
-	READ_INTEGER  shift 66
-	READ_LINE  shift 67
-	LITERAL  shift 68
-	INSTANCEOF  shift 69
-	'-'  shift 72
-	'!'  shift 73
-	'('  shift 74
-	'['  shift 75
-	VAR  shift 77
-	IDENTIFIER  reduce 55
-
-	Expr  goto 218
-	LValue  goto 101
-	Call  goto 102
-	Receiver  goto 93
-	Constant  goto 94
-	ArrayConstant  goto 95
 
 
 state 202
@@ -4142,32 +4142,6 @@ state 216
 
 
 state 217
-	Expr : Expr '[' Expr ']' DEFAULT . Expr  (89)
-	Receiver : .  (55)
-
-	NULL  shift 57
-	THIS  shift 58
-	NEW  shift 64
-	READ_INTEGER  shift 66
-	READ_LINE  shift 67
-	LITERAL  shift 68
-	INSTANCEOF  shift 69
-	'-'  shift 72
-	'!'  shift 73
-	'('  shift 74
-	'['  shift 75
-	VAR  shift 77
-	IDENTIFIER  reduce 55
-
-	Expr  goto 229
-	LValue  goto 101
-	Call  goto 102
-	Receiver  goto 93
-	Constant  goto 94
-	ArrayConstant  goto 95
-
-
-state 218
 	Receiver : Expr . '.'  (54)
 	LValue : Expr . '[' Expr ']'  (57)
 	Expr : Expr . '+' Expr  (63)
@@ -4206,8 +4180,34 @@ state 218
 	'<'  shift 134
 	'.'  shift 135
 	'['  shift 136
-	']'  shift 230
+	']'  shift 229
 	.  error
+
+
+state 218
+	Expr : Expr '[' Expr ']' DEFAULT . Expr  (89)
+	Receiver : .  (55)
+
+	NULL  shift 57
+	THIS  shift 58
+	NEW  shift 64
+	READ_INTEGER  shift 66
+	READ_LINE  shift 67
+	LITERAL  shift 68
+	INSTANCEOF  shift 69
+	'-'  shift 72
+	'!'  shift 73
+	'('  shift 74
+	'['  shift 75
+	VAR  shift 77
+	IDENTIFIER  reduce 55
+
+	Expr  goto 230
+	LValue  goto 101
+	Call  goto 102
+	Receiver  goto 93
+	Constant  goto 94
+	ArrayConstant  goto 95
 
 
 state 219
@@ -4458,6 +4458,12 @@ state 228
 
 
 state 229
+	Expr : Expr '[' Expr ':' Expr ']' .  (88)
+
+	.  reduce 88
+
+
+state 230
 	Receiver : Expr . '.'  (54)
 	LValue : Expr . '[' Expr ']'  (57)
 	Expr : Expr . '+' Expr  (63)
@@ -4480,12 +4486,6 @@ state 229
 	Expr : Expr '[' Expr ']' DEFAULT Expr .  (89)
 
 	.  reduce 89
-
-
-state 230
-	Expr : Expr '[' Expr ':' Expr ']' .  (88)
-
-	.  reduce 88
 
 
 state 231
@@ -4774,5 +4774,5 @@ Rules never reduced:
 State 228 contains 1 shift/reduce conflict.
 
 
-62 terminals, 39 nonterminals
+64 terminals, 39 nonterminals
 114 grammar rules, 245 states

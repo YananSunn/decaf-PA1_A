@@ -88,7 +88,8 @@ WHITESPACE			= ([ \t]+)
 "!="				{ return operator(Parser.NOT_EQUAL);	}
 "&&"				{ return operator(Parser.AND);			}
 "||"				{ return operator(Parser.OR);			}
-
+"[|"				{ return operator(Parser.FORLEFT);		}
+"|]"				{ return operator(Parser.FORRIGHT);		}
 "|||"				{ return operator(Parser.GUARDED);		}
 "%%"				{ return operator(Parser.NEWSAMEARRAY);	}
 "++"				{ return operator(Parser.JOINTARRAY);	}

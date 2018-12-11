@@ -296,6 +296,8 @@ public abstract class Tree {
     public static final int READLINEEXPR = VARBIND + 1;
 
     public static final int PRINT = READLINEEXPR + 1;
+    public static final int FORLEFT = PRINT + 1;
+    public static final int FORRIGHT = FORLEFT + 1;
     
     /**
      * Tags for Literal and TypeLiteral
@@ -1375,14 +1377,14 @@ public abstract class Tree {
     		}
     	}
     }
-    public static class ForeachVarArray extends Expr {
+    public static class ForeachArray extends Expr {
 
     	public Expr expr1;
     	public Expr expr2;
 	    public VarBind varbind;
 	    public Tree stmt;
 
-        public ForeachVarArray(VarBind varbind, Expr expr1, Expr expr2, Tree stmt, Location loc) {
+        public ForeachArray(VarBind varbind, Expr expr1, Expr expr2, Tree stmt, Location loc) {
             super(FOREACHARRAY, loc);
     		this.varbind = varbind;
     		this.expr1 = expr1;
@@ -1392,7 +1394,7 @@ public abstract class Tree {
 
     	@Override
         public void accept(Visitor v) {
-            v.visitForeachVarArray(this);
+            v.visitForeachArray(this);
         }
 
     	@Override
@@ -1412,46 +1414,7 @@ public abstract class Tree {
     	}
     }
     
-    public static class ForeachIdentArray extends Expr {
-
-    	public Expr expr1;
-    	public Expr expr2;
-    	public TypeLiteral elementType;
-	    public Tree stmt;
-	    public String name;
-
-        public ForeachIdentArray(TypeLiteral elementType, String name, Expr expr1, Expr expr2, Tree stmt, Location loc) {
-            super(FOREACHARRAY, loc);
-    		this.elementType = elementType;
-    		this.name = name;
-    		this.expr1 = expr1;
-			this.expr2 = expr2;
-			this.stmt = stmt;
-       }
-
-    	@Override
-        public void accept(Visitor v) {
-            v.visitForeachIdentArray(this);
-        }
-
-    	@Override
-    	public void printTo(IndentPrintWriter pw) {
-    		pw.println("foreach");
-    		pw.incIndent();
-    		pw.print("varbind " + name + " ");
-    		elementType.printTo(pw);
-    		pw.println();
-    		expr1.printTo(pw);
-    		if(expr2 != null) {
-    			expr2.printTo(pw);
-    		}
-    		else {
-    			pw.println("boolconst true");
-    		}
-    		stmt.printTo(pw);
-    		pw.decIndent();
-    	}
-    }
+    
     
 
     /**
@@ -1875,11 +1838,7 @@ public abstract class Tree {
             visitTree(that);
         }
         
-        public void visitForeachVarArray(ForeachVarArray that){
-            visitTree(that);
-        }
-        
-        public void visitForeachIdentArray(ForeachIdentArray that){
+        public void visitForeachArray(ForeachArray that){
             visitTree(that);
         }
         

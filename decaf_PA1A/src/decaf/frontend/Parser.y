@@ -32,9 +32,9 @@ import java.util.*;
 %token IDENTIFIER	  AND    OR    STATIC  INSTANCEOF
 %token LESS_EQUAL   GREATER_EQUAL  EQUAL   NOT_EQUAL
 
-%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY DEFAULT IN FOREACH
+%token SCOPY SEALED GUARDED NEWSAMEARRAY JOINTARRAY DEFAULT IN FOREACH FORLEFT FORRIGHT
 
-%token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.' '%%' '++'
+%token '+'  '-'  '*'  '/'  '%'  '='  '>'  '<'  '.' ':'  '%%' '++'
 %token ','  ';'  '!'  '('  ')'  '['  ']'  '{'  '}'
 
 
@@ -219,21 +219,21 @@ Stmt		    :	VariableDef
                 ;
 ForeachStmt		:	FOREACH '(' BoundVariable IN Expr WHILE Expr ')' Stmt
 					{
-						$$.stmt = new Tree.ForeachVarArray($3.varBind, $5.expr, $7.expr, $9.stmt, $1.loc);
+						$$.stmt = new Tree.ForeachArray($3.varBind, $5.expr, $7.expr, $9.stmt, $1.loc);
 					}
 				|	FOREACH '(' BoundVariable IN Expr ')' Stmt
 					{
-						$$.stmt = new Tree.ForeachVarArray($3.varBind, $5.expr, null, $7.stmt, $1.loc);
+						$$.stmt = new Tree.ForeachArray($3.varBind, $5.expr, null, $7.stmt, $1.loc);
 					}
 				;
 				
 BoundVariable	:	VAR IDENTIFIER
 					{
-						$$.varBind = new Tree.VarBind(null, $2.ident, $1.loc);
+						$$.varBind = new Tree.VarBind(null, $2.ident, $2.loc);
 					}
 				|	Type IDENTIFIER
 					{
-						$$.varBind = new Tree.VarBind($1.type, $2.ident, $1.loc);
+						$$.varBind = new Tree.VarBind($1.type, $2.ident, $2.loc);
 					}
 				;
 SimpleStmt      :	LValue '=' Expr
